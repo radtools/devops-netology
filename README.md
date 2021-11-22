@@ -20,22 +20,22 @@ __________________________________________________________________
 __________________________________________________________________
 __________________________________________________________________
 
-#home_work 02-git-04
-
-#Q1
-Решение: git show aefea 
-Ответ: commit aefead2207ef7e2aa5dc81a34aedf0cad4c32545
-Update CHANGELOG.md
-
-#Q2
-Решение: git show 85024
-Ответ: commit 85024d3100126de36331c6982bfaac02cdab9e76 (tag: v0.12.23)
-
-#Q3
-Решение: git show b8d720
-Ответ:2
-Хэши: 56cd7859e && 9ea88f22f 
-
+#home_work 02-git-04<br>
+<br>
+#Q1<br>
+Решение: git show aefea<br> 
+Ответ: commit aefead2207ef7e2aa5dc81a34aedf0cad4c32545<br>
+Update CHANGELOG.md<br>
+<br>
+#Q2<br>
+Решение: git show 85024<br>
+Ответ: commit 85024d3100126de36331c6982bfaac02cdab9e76 (tag: v0.12.23)<br>
+<br>
+#Q3<br>
+Решение: git show b8d720<br>
+Ответ:2<br>
+Хэши: 56cd7859e && 9ea88f22f<br> 
+<br>
 #Q4<br>
 Решение: git log  v0.12.23..v0.12.24<br>
 Ответ:<br>
@@ -58,15 +58,15 @@ Update CHANGELOG.md
 <br>
 #Q6<br>
 Решение: git log -L :'func globalPluginDirs':plugins.go --oneline<br>
-Ответ: 
-1)78b12205587fe839f10d946ea3fdc06719decb05 Remove config.go and update things using its aliases
-2)52dbf94834cb970b510f2fba853a5b49ad9b1a46 keep .terraform.d/plugins for discovery
-3)41ab0aef7a0fe030e84018973a64135b11abcd70 Add missing OS_ARCH dir to global plugin paths
-4)66ebff90cdfaa6938f26f908c7ebad8d547fea17 move some more plugin search path logic to command
-5)8364383c359a6b738a436d1b7745ccdce178df47 Push plugin discovery down into command package
-
-#Q7
-Решение: git log -S'func synchronizedWriters'
-Ответ: 
-1)bdfea50cc - James Bardin j.bardin@gmail.com (autor - remove unused)
-2)5ac311e2a - Martin Atkins mart@degeneration.co.uk (autor add feature)
+Ответ: <br>
+1)78b12205587fe839f10d946ea3fdc06719decb05 Remove config.go and update things using its aliases<br>
+2)52dbf94834cb970b510f2fba853a5b49ad9b1a46 keep .terraform.d/plugins for discovery<br>
+3)41ab0aef7a0fe030e84018973a64135b11abcd70 Add missing OS_ARCH dir to global plugin paths<br>
+4)66ebff90cdfaa6938f26f908c7ebad8d547fea17 move some more plugin search path logic to command<br>
+5)8364383c359a6b738a436d1b7745ccdce178df47 Push plugin discovery down into command package<br>
+<br>
+#Q7<br>
+Решение: git log -S'func synchronizedWriters'<br>
+Ответ: <br>
+1)bdfea50cc - James Bardin j.bardin@gmail.com (autor - remove unused)<br>
+2)5ac311e2a - Martin Atkins mart@degeneration.co.uk (autor add feature)<br>
