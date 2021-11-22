@@ -36,28 +36,28 @@ Update CHANGELOG.md
 Ответ:2
 Хэши: 56cd7859e && 9ea88f22f 
 
-#Q4
-Решение: git log  v0.12.23..v0.12.24
-Ответ:
-1)33ff1c03bb960b332be3af2e333462dde88b279e (tag: v0.12.24) v0.12.24
-2)b14b74c4939dcab573326f4e3ee2a62e23e12f89 [Website] vmc provider links
-3)3f235065b9347a758efadc92295b540ee0a5e26e Update CHANGELOG.md
-4)6ae64e247b332925b872447e9ce869657281c2bf registry: Fix panic when server is unreachable
-5)5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 website: Remove links to the getting started guide's old location
-6)06275647e2b53d97d4f0a19a0fec11f6d69820b5 Update CHANGELOG.md
-7)d5f9411f5108260320064349b757f55c09bc4b80 command: Fix bug when using terraform login on Windows
-8)4b6d06cc5dcb78af637bbb19c198faff37a066ed Update CHANGELOG.md
-9)dd01a35078f040ca984cdd349f18d0b67e486c35 Update CHANGELOG.md
-10)225466bc3e5f35baa5d07197bbc079345b77525e Cleanup after v0.12.23 release
-
-#Q5
-Решение: git log -S'func providerSource' --oneline
-Ответ:
-1)5af1e6234 main: Honor explicit provider_installation CLI config when present
-2)8c928e835 main: Consult local directories as potential mirrors of providers
-
-#Q6
-Решение: git log -L :'func globalPluginDirs':plugins.go --oneline
+#Q4<br>
+Решение: git log  v0.12.23..v0.12.24<br>
+Ответ:<br>
+1)33ff1c03bb960b332be3af2e333462dde88b279e (tag: v0.12.24) v0.12.24<br>
+2)b14b74c4939dcab573326f4e3ee2a62e23e12f89 [Website] vmc provider links<br>
+3)3f235065b9347a758efadc92295b540ee0a5e26e Update CHANGELOG.md<br>
+4)6ae64e247b332925b872447e9ce869657281c2bf registry: Fix panic when server is unreachable<br>
+5)5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 website: Remove links to the getting started guide's old location<br>
+6)06275647e2b53d97d4f0a19a0fec11f6d69820b5 Update CHANGELOG.md<br>
+7)d5f9411f5108260320064349b757f55c09bc4b80 command: Fix bug when using terraform login on Windows<br>
+8)4b6d06cc5dcb78af637bbb19c198faff37a066ed Update CHANGELOG.md<br>
+9)dd01a35078f040ca984cdd349f18d0b67e486c35 Update CHANGELOG.md<br>
+10)225466bc3e5f35baa5d07197bbc079345b77525e Cleanup after v0.12.23 release<br>
+<br>
+#Q5<br>
+Решение: git log -S'func providerSource' --oneline<br>
+Ответ:<br>
+1)5af1e6234 main: Honor explicit provider_installation CLI config when present<br>
+2)8c928e835 main: Consult local directories as potential mirrors of providers<br>
+<br>
+#Q6<br>
+Решение: git log -L :'func globalPluginDirs':plugins.go --oneline<br>
 Ответ: 
 1)78b12205587fe839f10d946ea3fdc06719decb05 Remove config.go and update things using its aliases
 2)52dbf94834cb970b510f2fba853a5b49ad9b1a46 keep .terraform.d/plugins for discovery
