@@ -68,5 +68,5 @@ Update CHANGELOG.md<br>
 #Q7<br>
 Решение: git log -S'func synchronizedWriters'<br>
 Ответ: <br>
-1)bdfea50cc - James Bardin j.bardin@gmail.com (autor - remove unused)<br>
-2)5ac311e2a - Martin Atkins mart@degeneration.co.uk (autor add feature)<br>
+1)bdfea50cc - James Bardin j.bardin@gmail.com (author - remove unused)<br>
+2)5ac311e2a - Martin Atkins mart@degeneration.co.uk (author add feature)<br>
