@@ -13,7 +13,8 @@ tty
 /dev/pts/0
 ```
 вывод из 1й сессии во 2ю можно сделать следующим образом:
-```ls -l \something 2>/dev/pts/1
+```ruby
+ls -l \something 2>/dev/pts/1
 ```
 Вывод будет во второй сессии терминала `/dev/pts/1`
 
@@ -29,7 +30,6 @@ vagrant@node1:~$ cat test.file2
 test
 netology
 dev-ops
-vagrant@node1:~$ 
 ```
 6) Да, к примеру:
   `echo 'message' > /dev/tty1`
