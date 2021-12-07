@@ -58,13 +58,6 @@ vagrant@localhost's password:
 Connection to localhost closed.
  
 ```
-13) 'sudo reptyr -T' по 'readme' от сюда 'https://github.com/nelhage/reptyr#readme'
+13) `sudo reptyr -T` по `readme` от сюда `https://github.com/nelhage/reptyr#readme`
   
-14) 'tee' читает из 'input' и пишет в 'output' и в файл. Работает потому что команда 'tee' не встроенная в 'shell' и с 'sudo' запускается с повышенными правами, в отдичии от 'echo', которая встроенна в 'shell' запускается с правами пользователя и 'sudo' там не работает.
-
-
-
-
-
-
-
+14) `tee' читает из 'input` и пишет в `output` и в файл. Работает потому что команда `tee` не встроенная в `shell` и с `sudo` запускается с повышенными правами, в отдичии от `echo`, которая встроенна в `shell` запускается с правами пользователя и `sudo` там не работает.
