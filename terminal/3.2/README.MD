@@ -38,7 +38,7 @@ dev-ops
    `echo netology > /proc/$$/fd/5` выведет в терминал слово "netology"
     если запустить `echo netology > /proc/$$/fd/5` в новой сесcии, получим ошибку, так как такого дескриптора нет на данный момент в текущей(новой) сесcии
 
-8) `echo new_line{1..25} >> text.txt 3>&2 2>&1 1>&3 3>&-`
+8) `echo new_line{1..25} 3>&2 2>&1 1>&3 3>&-`
 ```ruby
 (3) new_descr > (2) stderr
 (2) stderr    > (1) stdout
