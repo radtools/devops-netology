@@ -45,7 +45,8 @@ dev-ops
 (2) stdout    > (3) new_desc
 (3) new_desc  > (-) close_new_desc
 ```
-вывод команды: new_line1 new_line2 new_line3 new_line4 new_line5 new_line6 new_line7 new_line8 new_line9 new_line10 new_line11 new_line12 new_line13 new_line14 new_line15 new_line16 new_line17 new_line18 new_line19 new_line20 new_line21 new_line22 new_line23 new_line24 new_line25 <br>
+вывод команды: <br>
+`new_line1 new_line2 new_line3 new_line4 new_line5 new_line6 new_line7 new_line8 new_line9 new_line10 new_line11 new_line12 new_line13 new_line14 new_line15 new_line16 new_line17 new_line18 new_line19 new_line20 new_line21 new_line22 new_line23 new_line24 new_line25` 
 
 9) `cat /proc/$$/environ` выведет переменные окружения
 можно получить тоже самое (только с разделением по переменным по строкам)через:
