@@ -117,3 +117,22 @@ user@test-pc:~/vagrant-vm$ dmesg |grep virtualiz
 [    0.027871] Booting paravirtualized kernel on bare hardware
 ```
 
+**5. Как настроен sysctl fs.nr_open на системе по-умолчанию? Узнайте, что означает этот параметр. Какой другой существующий лимит не позволит достичь такого числа (ulimit --help)?**
+
+```shell
+$ sysctl fs.nr_open
+fs.nr_open = 1048576
+```
+fs.nr_open - жесткий лимит на открытые дескрипторы для ядра (системы)
+
+```shell
+$ ulimit -Sn
+1024
+```
+Soft limit на пользователя, может быть изменен как большую, так и меньшую сторону  
+```shell
+$ ulimit -Hn
+1048576
+```
+Hard limit на пользователя, может быть изменен только в меньшую сторону  
+Оба `ulimit` -n не могут превышать `fs.nr_open`
