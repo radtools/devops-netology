@@ -2,8 +2,32 @@
 
 1. **Узнайте о [sparse](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B5%D0%B6%D1%91%D0%BD%D0%BD%D1%8B%D0%B9_%D1%84%D0%B0%D0%B9%D0%BB) (разряженных) файлах.**
 
+Разреженным файлом называют файл, внутри которого имеется одна или несколько областей, незанятые данными. _Можно было бы вставить картинку из Википедии, но зачем? :)_
+
 1. **Могут ли файлы, являющиеся жесткой ссылкой на один объект, иметь разные права доступа и владельца? Почему?**
-1. **Сделайте `vagrant destroy` на имеющийся инстанс Ubuntu. Замените содержимое Vagrantfile следующим:**
+
+Жесткая ссылка и файл, для которой она создавалась имеют одинаковые inode. Поэтому жесткая ссылка имеет те же права доступа, владельца и время последней модификации, что и целевой файл.
+
+_И... Экперемент._
+
+```
+vagrant@vagrant:~$ mkdir test
+vagrant@vagrant:~$ cd test
+vagrant@vagrant:~/test$ touch test_file
+vagrant@vagrant:~/test$ ln test_file test_file_link
+vagrant@vagrant:~/test$ ls -ilh
+total 0
+1048599 -rw-rw-r-- 2 vagrant vagrant 0 Feb 16 09:25 test_file
+1048599 -rw-rw-r-- 2 vagrant vagrant 0 Feb 16 09:25 test_file_link
+vagrant@vagrant:~/test$ chmod 0755 test_file
+vagrant@vagrant:~/test$ ls -ilh
+total 0
+1048599 -rwxr-xr-x 2 vagrant vagrant 0 Feb 16 09:25 test_file
+1048599 -rwxr-xr-x 2 vagrant vagrant 0 Feb 16 09:25 test_file_link
+
+```
+
+3. **Сделайте `vagrant destroy` на имеющийся инстанс Ubuntu. Замените содержимое Vagrantfile следующим:**
 
     ```bash
     Vagrant.configure("2") do |config|
