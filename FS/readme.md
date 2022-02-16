@@ -4,7 +4,7 @@
 
 Разреженным файлом называют файл, внутри которого имеется одна или несколько областей, незанятые данными. _Можно было бы вставить картинку из Википедии, но зачем? :)_
 
-1. **Могут ли файлы, являющиеся жесткой ссылкой на один объект, иметь разные права доступа и владельца? Почему?**
+2. **Могут ли файлы, являющиеся жесткой ссылкой на один объект, иметь разные права доступа и владельца? Почему?**
 
 Жесткая ссылка и файл, для которой она создавалась имеют одинаковые inode. Поэтому жесткая ссылка имеет те же права доступа, владельца и время последней модификации, что и целевой файл.
 
@@ -43,30 +43,238 @@ total 0
     end
     ```
 
-    Данная конфигурация создаст новую виртуальную машину с двумя дополнительными неразмеченными дисками по 2.5 Гб.
+Данная конфигурация создаст новую виртуальную машину с двумя дополнительными неразмеченными дисками по 2.5 Гб.
+    
+```
+vagrant@vagrant:~$ lsblk
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+loop0                       7:0    0 55.4M  1 loop /snap/core18/2128
+loop1                       7:1    0 70.3M  1 loop /snap/lxd/21029
+loop2                       7:2    0 32.3M  1 loop /snap/snapd/12704
+loop3                       7:3    0 55.5M  1 loop /snap/core18/2284
+loop4                       7:4    0 43.6M  1 loop /snap/snapd/14978
+sda                         8:0    0   64G  0 disk
+├─sda1                      8:1    0    1M  0 part
+├─sda2                      8:2    0    1G  0 part /boot
+└─sda3                      8:3    0   63G  0 part
+└─ubuntu--vg-ubuntu--lv 253:0    0 31.5G  0 lvm  /
+sdb                         8:16   0  2.5G  0 disk
+sdc                         8:32   0  2.5G  0 disk
+```
 
-1. **Используя `fdisk`, разбейте первый диск на 2 раздела: 2 Гб, оставшееся пространство.**
+4. **Используя `fdisk`, разбейте первый диск на 2 раздела: 2 Гб, оставшееся пространство.**
 
-1. **Используя `sfdisk`, перенесите данную таблицу разделов на второй диск.**
+```
+vagrant@vagrant:~$sudo fdisk -l /dev/sdb
+Disk /dev/sdb: 2.51 GiB, 2684354560 bytes, 5242880 sectors
+Disk model: VBOX HARDDISK
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xd081bd53
 
-1. **Соберите `mdadm` RAID1 на паре разделов 2 Гб.**
+Device     Boot   Start     End Sectors  Size Id Type
+/dev/sdb1          2048 4196351 4194304    2G 83 Linux
+/dev/sdb2       4196352 5242879 1046528  511M 83 Linux
+```
 
-1. **Соберите `mdadm` RAID0 на второй паре маленьких разделов.**
+5. **Используя `sfdisk`, перенесите данную таблицу разделов на второй диск.**
+```
+vagrant@vagrant:~$sudo sfdisk -d /dev/sdb|sudo sfdisk --force /dev/sdc
+Checking that no-one is using this disk right now ... OK
 
-1. **Создайте 2 независимых PV на получившихся md-устройствах.**
-1. **Создайте общую volume-group на этих двух PV.**
+Disk /dev/sdc: 2.51 GiB, 2684354560 bytes, 5242880 sectors
+Disk model: VBOX HARDDISK
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
 
-1. **Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.**
+>>> Script header accepted.
+>>> Script header accepted.
+>>> Script header accepted.
+>>> Script header accepted.
+>>> Created a new DOS disklabel with disk identifier 0xd081bd53.
+/dev/sdc1: Created a new partition 1 of type 'Linux' and of size 2 GiB.
+/dev/sdc2: Created a new partition 2 of type 'Linux' and of size 511 MiB.
+/dev/sdc3: Done.
 
-1. **Создайте `mkfs.ext4` ФС на получившемся LV.**
+New situation:
+Disklabel type: dos
+Disk identifier: 0xd081bd53
 
-1. **Смонтируйте этот раздел в любую директорию, например, `/tmp/new`.**
+Device     Boot   Start     End Sectors  Size Id Type
+/dev/sdc1          2048 4196351 4194304    2G 83 Linux
+/dev/sdc2       4196352 5242879 1046528  511M 83 Linux
 
-1. **Поместите туда тестовый файл, например `wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz`.**
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+```
+и в итоге видно вот что:
+```
+vagrant@vagrant:~$ lsblk
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+loop0                       7:0    0 55.4M  1 loop /snap/core18/2128
+loop1                       7:1    0 70.3M  1 loop /snap/lxd/21029
+loop3                       7:3    0 55.5M  1 loop /snap/core18/2284
+loop4                       7:4    0 43.6M  1 loop /snap/snapd/14978
+loop5                       7:5    0 61.9M  1 loop /snap/core20/1328
+loop6                       7:6    0 67.2M  1 loop /snap/lxd/21835
+sda                         8:0    0   64G  0 disk
+├─sda1                      8:1    0    1M  0 part
+├─sda2                      8:2    0    1G  0 part /boot
+└─sda3                      8:3    0   63G  0 part
+  └─ubuntu--vg-ubuntu--lv 253:0    0 31.5G  0 lvm  /
+sdb                         8:16   0  2.5G  0 disk
+├─sdb1                      8:17   0    2G  0 part
+└─sdb2                      8:18   0  511M  0 part
+sdc                         8:32   0  2.5G  0 disk
+├─sdc1                      8:33   0    2G  0 part
+└─sdc2                      8:34   0  511M  0 part
+```
 
-1. **Прикрепите вывод `lsblk`.**
+6. **Соберите `mdadm` RAID1 на паре разделов 2 Гб.**
 
-1. **Протестируйте целостность файла:**
+`mdadm --create --verbose /dev/md0 -l 1 -n 2 /dev/sd{b1,c1}`
+
+где
+
+`/dev/md0` - устройство RAID, которое появится после сборки;
+
+`-l 1` — уровень RAID; 
+
+`-n 2` — количество дисков, из которых собирается массив; 
+
+`/dev/sd{b1,c1}` — сборка выполняется из дисков sdb1 и sdc1.
+
+
+7. **Соберите `mdadm` RAID0 на второй паре маленьких разделов.**
+
+`mdadm --create --verbose /dev/md1 -l 0 -n 2 /dev/sd{b2,c2}`
+где
+
+`/dev/md1` - устройство RAID, которое появится после сборки;
+
+`-l 0` — уровень RAID; 
+
+`-n 2` — количество дисков, из которых собирается массив; 
+
+`/dev/sd{b2,c2}` — сборка выполняется из дисков sdb1 и sdc1.
+
+и кусок вывода lsblk:
+```
+root@vagrant:~# lsblk
+sdb                         8:16   0  2.5G  0 disk
+├─sdb1                      8:17   0    2G  0 part
+│ └─md0                     9:0    0    2G  0 raid1
+└─sdb2                      8:18   0  511M  0 part
+  └─md1                     9:1    0 1018M  0 raid0
+sdc                         8:32   0  2.5G  0 disk
+├─sdc1                      8:33   0    2G  0 part
+│ └─md0                     9:0    0    2G  0 raid1
+└─sdc2                      8:34   0  511M  0 part
+  └─md1                     9:1    0 1018M  0 raid0
+```
+
+8. **Создайте 2 независимых PV на получившихся md-устройствах.**
+
+```
+root@vagrant:~# pvcreate /dev/md0 /dev/md1
+  Physical volume "/dev/md0" successfully created.
+  Physical volume "/dev/md1" successfully created.
+```
+
+10. **Создайте общую volume-group на этих двух PV.**
+
+```
+root@vagrant:~# vgcreate VG0 /dev/md0 /dev/md1
+  Volume group "VG0" successfully created
+root@vagrant:~# vgs
+  VG        #PV #LV #SN Attr   VSize   VFree
+  VG0         2   0   0 wz--n-  <2.99g  <2.99g
+```
+
+10. **Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.**
+
+```
+root@vagrant:~# lvcreate -L 100M VG0 /dev/md0
+  Logical volume "lvol0" created.
+root@vagrant:~# lvs
+  LV        VG        Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lvol0     VG0       -wi-a----- 100.00m
+```
+
+11. **Создайте `mkfs.ext4` ФС на получившемся LV.**
+
+```
+root@vagrant:~# mkfs.ext4 /dev/VG0/lvol0
+mke2fs 1.45.5 (07-Jan-2020)
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+```
+
+12. **Смонтируйте этот раздел в любую директорию, например, `/tmp/new`.**
+
+```
+root@vagrant:~# mkdir /tmp/new
+root@vagrant:~# mount /dev/VG0/lvol0 /tmp/new
+```
+
+13. **Поместите туда тестовый файл, например `wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz`.**
+
+_выполнено, не знаю что сюда написать_
+
+14. **Прикрепите вывод `lsblk`.**
+
+```
+root@vagrant:/tmp/new# lsblk
+NAME                      MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+loop0                       7:0    0 55.4M  1 loop  /snap/core18/2128
+loop1                       7:1    0 70.3M  1 loop  /snap/lxd/21029
+loop3                       7:3    0 55.5M  1 loop  /snap/core18/2284
+loop4                       7:4    0 43.6M  1 loop  /snap/snapd/14978
+loop5                       7:5    0 61.9M  1 loop  /snap/core20/1328
+loop6                       7:6    0 67.2M  1 loop  /snap/lxd/21835
+sda                         8:0    0   64G  0 disk
+├─sda1                      8:1    0    1M  0 part
+├─sda2                      8:2    0    1G  0 part  /boot
+└─sda3                      8:3    0   63G  0 part
+  └─ubuntu--vg-ubuntu--lv 253:0    0 31.5G  0 lvm   /
+sdb                         8:16   0  2.5G  0 disk
+├─sdb1                      8:17   0    2G  0 part
+│ └─md0                     9:0    0    2G  0 raid1
+│   └─VG0-lvol0           253:1    0  100M  0 lvm   /tmp/new
+└─sdb2                      8:18   0  511M  0 part
+  └─md1                     9:1    0 1018M  0 raid0
+sdc                         8:32   0  2.5G  0 disk
+├─sdc1                      8:33   0    2G  0 part
+│ └─md0                     9:0    0    2G  0 raid1
+│   └─VG0-lvol0           253:1    0  100M  0 lvm   /tmp/new
+└─sdc2                      8:34   0  511M  0 part
+  └─md1                     9:1    0 1018M  0 raid0
+```
+
+15. **Протестируйте целостность файла:**
+
+    ```bash
+    root@vagrant:~# gzip -t /tmp/new/test.gz
+    root@vagrant:~# echo $?
+    0
+    ```
+выполнено 
+
+16. **Используя pvmove, переместите содержимое PV с RAID0 на RAID1.**
+
+17. **Сделайте `--fail` на устройство в вашем RAID1 md.**
+
+18. **Подтвердите выводом `dmesg`, что RAID1 работает в деградированном состоянии.**
+
+19. **Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:**
 
     ```bash
     root@vagrant:~# gzip -t /tmp/new/test.gz
@@ -74,18 +282,4 @@ total 0
     0
     ```
 
-1. **Используя pvmove, переместите содержимое PV с RAID0 на RAID1.**
-
-1. **Сделайте `--fail` на устройство в вашем RAID1 md.**
-
-1. **Подтвердите выводом `dmesg`, что RAID1 работает в деградированном состоянии.**
-
-1. **Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:**
-
-    ```bash
-    root@vagrant:~# gzip -t /tmp/new/test.gz
-    root@vagrant:~# echo $?
-    0
-    ```
-
-1. **Погасите тестовый хост, `vagrant destroy`.**
+20. **Погасите тестовый хост, `vagrant destroy`.**
