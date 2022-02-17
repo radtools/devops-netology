@@ -1,4 +1,4 @@
-###Домашнее задание к занятию "3.7. Компьютерные сети, лекция 2"
+### Домашнее задание к занятию "3.7. Компьютерные сети, лекция 2"
 
 **1.Проверьте список доступных сетевых интерфейсов на вашем компьютере. Какие команды есть для этого в Linux и в Windows?**
 
@@ -110,6 +110,7 @@ Broadcast: 10.10.10.7
 Hosts/Net: 6                     Class A, Private Internet
 ```
 24-ку можно разбить на 32 подсети /29
+
 ![image](https://user-images.githubusercontent.com/93760545/154448779-c4f36190-7d14-436e-b536-761714b0c7db.png)
 
 
@@ -122,14 +123,17 @@ Hosts/Net: 6                     Class A, Private Internet
 Проверить таблицу можно так:
 
 **Linux**: `ip neigh, arp -n`
+
 _Windows_: `arp -a
 
 Очистить кеш так:
 
-**Linux**: ip neigh flush
-_Windows_: arp -d *
+**Linux**: `ip neigh flush`
+
+_Windows_: `arp -d *`
 
 Удалить один IP так:
 
-**Linux**: ip neigh delete <IP> dev <INTERFACE>, arp -d <IP>
-_Windows_: arp -d <IP>
+**Linux**: `ip neigh delete <IP> dev <INTERFACE>, arp -d <IP>`
+
+_Windows_: `arp -d <IP>`
