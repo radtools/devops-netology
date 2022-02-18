@@ -77,7 +77,7 @@ EOF
 Name=dummy0
 
 [Network]
-Address=10.0.8.1/24
+Address=10.9.8.1/24
 EOF
 
 # systemctl restart systemd-networkd
@@ -86,29 +86,45 @@ EOF
 3. Проверка интерфейса
 
 ```shell
-root@test-pc:~# ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
-2: enp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether b0:6e:bf:d0:18:50 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.31.241/24 brd 192.168.31.255 scope global dynamic noprefixroute enp2s0
-       valid_lft 22613sec preferred_lft 22613sec
-    inet6 fe80::bcca:44c5:bd20:2784/64 scope link noprefixroute
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 02:be:82:6b:cc:1d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::be:82ff:fe6b:cc1d/64 scope link
        valid_lft forever preferred_lft forever
 3: dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/ether 9a:e6:1b:98:77:9c brd ff:ff:ff:ff:ff:ff
-    inet 10.0.8.1/24 brd 10.0.8.255 scope global dummy0
+    link/ether 72:d1:d2:01:db:dd brd ff:ff:ff:ff:ff:ff
+    inet 10.9.8.1/24 brd 10.9.8.255 scope global dummy0
        valid_lft forever preferred_lft forever
-    inet6 fe80::98e6:1bff:fe98:779c/64 scope link
+    inet6 fe80::70d1:d2ff:fe01:dbdd/64 scope link
        valid_lft forever preferred_lft forever
 
 ```
+
+
 **3.Проверьте открытые TCP порты в Ubuntu, какие протоколы и приложения используют эти порты? Приведите несколько примеров.**
 
+```shell
+ #ss -tnlp
+State      Recv-Q Send-Q Local Address:Port               Peer Address:Port     
+LISTEN     0      128          *:22                       *:*                   users:(("sshd",pid=1313,fd=3))
+LISTEN     0      128         :::22                      :::*                   users:(("sshd",pid=1313,fd=4))
+```
+На этой машине открыто 2 терминальные сессии ssh. _и все_
+
 **4.Проверьте используемые UDP сокеты в Ubuntu, какие протоколы и приложения используют эти порты?**
+
+```shell
+#ss -unap
+State      Recv-Q Send-Q Local Address:Port               Peer Address:Port     
+UNCONN     0      0            *:68                       *:*                   users:(("dhclient",pid=885,fd=6))
+```
+Клиент DHCP обменивается данными через UDP-порт 68 с сервером DHCP.
 
 **5.Используя diagrams.net, создайте L3 диаграмму вашей домашней сети или любой другой сети, с которой вы работали.**
