@@ -57,56 +57,52 @@ Paths: (23 available, best #7, table default)
 
 **2.Создайте dummy0 интерфейс в Ubuntu. Добавьте несколько статических маршрутов. Проверьте таблицу маршрутизации.**
 
-1. запуск модуля
+1. Создание интерфейса
 ```shell
 # echo "dummy" > /etc/modules-load.d/dummy.conf
-# echo "options dummy numdummies=2" > /etc/modprobe.d/dummy.conf
+# echo "options dummy numdummies=1" > /etc/modprobe.d/dummy.conf
 ```
-2. Настройка и запуск интерфейса
+2. Настройка
 
 ```shell
-# cat << "EOF" >> /etc/systemd/network/10-dummy0.netdev
+root@test-srv:~#cat << "EOF" >> /etc/systemd/network/0-dummy0.netdev
 [NetDev]
 Name=dummy0
 Kind=dummy
 EOF
-
-
-# cat << "EOF" >> /etc/systemd/network/20-dummy0.network
+```
+```shell
+root@test-srv:~#cat << "EOF" >> /etc/systemd/network/1-dummy0.network
 [Match]
 Name=dummy0
 
 [Network]
-Address=10.9.8.1/24
+Address=10.0.8.1/24
 EOF
-
-# systemctl restart systemd-networkd
 ```
-
-3. Проверка интерфейса
+3. Проверка
 
 ```shell
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+root@test-srv:~#ip link list
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 02:be:82:6b:cc:1d brd ff:ff:ff:ff:ff:ff
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global enp0s3
-       valid_lft forever preferred_lft forever
-    inet6 fe80::be:82ff:fe6b:cc1d/64 scope link
-       valid_lft forever preferred_lft forever
-3: dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/ether 72:d1:d2:01:db:dd brd ff:ff:ff:ff:ff:ff
-    inet 10.9.8.1/24 brd 10.9.8.255 scope global dummy0
-       valid_lft forever preferred_lft forever
-    inet6 fe80::70d1:d2ff:fe01:dbdd/64 scope link
-       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 08:00:27:58:5f:ce brd ff:ff:ff:ff:ff:ff
+3: dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether 1a:e7:ee:dc:39:b1 brd ff:ff:ff:ff:ff:ff
 
 ```
+4. добавление статического маршрута через конфигурацию `netplan`
+```shell
+ routes:
+ - to: 176.18.0.0/24
+ via: 10.23.0.100
+```
+5. Проверка статических маршрутов `ip r | grep static`
 
+```shell
+176.18.0.0/24 via 10.23.0.100 dev enp0s3 proto static
+```
 
 **3.Проверьте открытые TCP порты в Ubuntu, какие протоколы и приложения используют эти порты? Приведите несколько примеров.**
 
