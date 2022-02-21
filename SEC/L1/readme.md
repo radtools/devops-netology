@@ -131,3 +131,9 @@ root@test-node2:~#
 ```
 
 **7. Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.**
+```
+tcpdump -nnei any -c 100 -w node2-100packets.pcap
+```
+
+![image](https://user-images.githubusercontent.com/93760545/154933665-687d849f-7644-4d63-ad65-f062464b4b46.png)
+
