@@ -97,16 +97,37 @@ root@test-node1:~# ssh root@192.168.31.149
 Enter passphrase for key '/root/.ssh/id_rsa': 
 \\Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.11.22-5-pve x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-
 Last login: Mon Feb 21 09:41:41 2022
 root@test-node2:~# 
 ```
 
 **6. Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход на удаленный сервер осуществлялся по имени сервера.**
+
+```bash
+root@test-node1:~# mv .ssh/id_rsa .ssh/netology_rsa
+root@test-node1:~# mv .ssh/id_rsa.pub .ssh/netology_rsa.pub
+```
+Создание файла конфигурации SSH клиента 
+```bash
+touch ~/.ssh/config
+```
+Содержимое файла конфигурации
+
+```bash
+Host node2
+    Hostname 192.168.31.149
+    IdentityFile /root/.ssh/netology_rsa
+```
+Проверка
+
+```bash
+root@test-node1:~/.ssh# ssh node2
+Enter passphrase for key '/root/.ssh/netology_rsa': 
+Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.11.22-5-pve x86_64)
+...
+
+Last login: Mon Feb 21 10:02:27 2022 from 192.168.31.143
+root@test-node2:~# 
+```
 
 **7. Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.**
