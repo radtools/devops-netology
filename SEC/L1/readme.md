@@ -18,6 +18,8 @@
 
 **4. Проверьте на TLS уязвимости произвольный сайт в интернете (кроме сайтов МВД, ФСБ, МинОбр, НацБанк, РосКосмос, РосАтом, РосНАНО и любых госкомпаний, объектов КИИ, ВПК ... и тому подобное).**
 
+Проверил сайт предприятия на хостинге.
+
 ```bash
 ./testssl.sh -U --sneaky https://XXXXX.ru/
 
@@ -71,9 +73,39 @@
 
 ```
 
-
-
 **5. Установите на Ubuntu ssh сервер, сгенерируйте новый приватный ключ. Скопируйте свой публичный ключ на другой сервер. Подключитесь к серверу по SSH-ключу.**
+
+Генерация:
+
+```bash
+ssh-keygen
+Generating public/private rsa key pair.
+```
+
+Копирование
+```bash
+ssh-copy-id -i .ssh/id_rsa root@192.168.31.149
+...
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@192.168.31.149'"
+and check to make sure that only the key(s) you wanted were added.
+```
+Проверка
+```
+root@test-node1:~# ssh root@192.168.31.149
+Enter passphrase for key '/root/.ssh/id_rsa': 
+\\Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.11.22-5-pve x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+Last login: Mon Feb 21 09:41:41 2022
+root@test-node2:~# 
+```
 
 **6. Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход на удаленный сервер осуществлялся по имени сервера.**
 
