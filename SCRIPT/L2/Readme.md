@@ -34,12 +34,12 @@ import os
 
 bash_command = ["cd ~/netology/sysadm-homeworks", "git status"]
 result_os = os.popen(' && '.join(bash_command)).read()
-#is_change = False
+#is_change = False - логическая переменная (очевидно лишняя)(закоментил, как лишнее)
 for result in result_os.split('\n'):
     if result.find('modified') != -1:
         prepare_result = result.replace('\tmodified:   ', '')
         print(prepare_result)
-        #break
+        #break - прерывает обработку при первом же найденом вхождении (закоментил, как лишнее)
 ```
 
 
