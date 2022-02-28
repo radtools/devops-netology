@@ -6,10 +6,10 @@
 
 ## Задание
 
-1. Создайте виртуальную машину Linux.
+1. Создайте виртуальную машину Linux.  
 vagrant up (64-ubuntu)
 
-2. Установите ufw и разрешите к этой машине сессии на порты 22 и 443, при этом трафик на интерфейсе localhost (lo) должен ходить свободно на все порты.
+2. Установите ufw и разрешите к этой машине сессии на порты 22 и 443, при этом трафик на интерфейсе localhost (lo) должен ходить свободно на все порты.  
 ![image](https://user-images.githubusercontent.com/93760545/155962230-ea279a84-c036-49d6-8109-9ddb23b244ff.png)
 
 3. Установите hashicorp vault ([инструкция по ссылке](https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started#install-vault)).
