@@ -83,9 +83,111 @@ Other commands:
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
 
+Merge 4+5
 
 
 5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.
+
+Скрипт
+
+```bash 
+#!/bin/bash
+sudo apt install jq -y
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=root
+tee admin-policy.hcl <<EOF
+# Enable secrets engine
+path "sys/mounts/*" {
+ capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+# List enabled secrets engine
+path "sys/mounts" {
+ capabilities = [ "read", "list" ]
+}
+
+# Work with pki secrets engine
+path "pki*" {
+ capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
+}
+EOF
+
+# enable policy
+
+vault policy write admin admin-policy.hcl
+
+#Generating root CA
+
+#enable pki
+
+vault secrets enable pki
+
+#tune pki ttl to 87600 hours
+
+vault secrets tune -max-lease-ttl=87600h pki
+
+#gen&save root cert in CA_cert.crt to domain zs-fond.online
+
+vault write -field=certificate pki/root/generate/internal \
+     common_name="zs-fond.online" \
+     ttl=87600h > CA_cert.crt
+
+#Configure the CA and CRL URLs
+
+vault write pki/config/urls \
+     issuing_certificates="$VAULT_ADDR/v1/pki/ca" \
+     crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
+
+#Generate intermediate CA
+
+#enable pki secrets at pki_int path.
+
+vault secrets enable -path=pki_int pki
+
+#tune pki_int TTL to 43800 hrs
+
+vault secrets tune -max-lease-ttl=43800h pki_int
+
+#generate an intermediate and save the CSR as pki_intermediate.csr
+
+vault write -format=json pki_int/intermediate/generate/internal \
+     common_name="zs-fond.online Intermediate Authority" \
+     | jq -r '.data.csr' > pki_intermediate.csr
+
+
+#Sign the intermediate certificate with the root CA private key,
+#and save the generated certificate as intermediate.cert.pem
+
+vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
+     format=pem_bundle ttl="43800h" \
+     | jq -r '.data.certificate' > intermediate.cert.pem
+
+#importing cert back to vault
+
+vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
+
+#creating a role
+
+#Create a role named zs-fond which allows subdomains.
+
+vault write pki_int/roles/zs-fond \
+     allowed_domains="zs-fond.online" \
+     allow_subdomains=true \
+     max_ttl="720h"
+
+#Request certificates
+
+json_crt=`vault write -format=json pki_int/issue/zs-fond common_name="test.zs-fond.online" ttl="720h"`
+
+#export crt
+echo $json_crt|jq -r '.data.certificate'>test.zs-fond.online.crt
+#export key
+echo $json_crt|jq -r '.data.private_key'>test.zs-fond.online.key
+
+#install ROOT CA
+sudo cp CA_cert.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
 
 6. Установите nginx.
 
