@@ -191,6 +191,22 @@ sudo update-ca-certificates
 
 6. Установите nginx.
 
+```bash
+ubuntu@test:~$ apt install nginx
+...
+ubuntu@test:~$ systemctl status nginx
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2022-03-03 06:08:30 UTC; 16s ago
+       Docs: man:nginx(8)
+   Main PID: 10704 (nginx)
+      Tasks: 2 (limit: 1147)
+     Memory: 3.5M
+     CGroup: /system.slice/nginx.service
+             ├─10704 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+             └─10705 nginx: worker process
+```
+
 7. По инструкции ([ссылка](https://nginx.org/en/docs/http/configuring_https_servers.html)) настройте nginx на https, используя ранее подготовленный сертификат:
   - можно использовать стандартную стартовую страницу nginx для демонстрации работы сервера;
   - можно использовать и другой html файл, сделанный вами;
