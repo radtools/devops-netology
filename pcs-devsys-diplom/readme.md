@@ -155,9 +155,9 @@ ubuntu@test:~$ systemctl status nginx
   - можно использовать и другой html файл, сделанный вами;
 
 ```bash 
-sudo mkdir /etc/nginx/ssl
-sudo ln -s /home/ubuntu/test.zs-fond.online.crt /etc/nginx/ssl
-sudo ln -s /home/ubuntu/test.zs-fond.online.key /etc/nginx/ssl
+sudo mkdir /etc/nginx/ssl  #создаем директорию
+sudo ln -s /home/ubuntu/test.zs-fond.online.crt /etc/nginx/ssl #создаем символьную ссылку на crt для nginx
+sudo ln -s /home/ubuntu/test.zs-fond.online.key /etc/nginx/ssl #создаем символьную ссылку на key для nginx
 ```
 
 
