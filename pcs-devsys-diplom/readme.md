@@ -154,6 +154,13 @@ ubuntu@test:~$ systemctl status nginx
   - можно использовать стандартную стартовую страницу nginx для демонстрации работы сервера;
   - можно использовать и другой html файл, сделанный вами;
 
+```bash 
+sudo mkdir /etc/nginx/ssl
+sudo ln -s /home/ubuntu/test.zs-fond.online.crt /etc/nginx/ssl
+sudo ln -s /home/ubuntu/test.zs-fond.online.key /etc/nginx/ssl
+```
+
+
 8. Откройте в браузере на хосте https адрес страницы, которую обслуживает сервер nginx.
 
 9. Создайте скрипт, который будет генерировать новый сертификат в vault:
