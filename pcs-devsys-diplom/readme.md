@@ -24,15 +24,15 @@ script
 ```bash
 #!/bin/bash
 
-#stage1. настраиваем ufw (задаем интерфейс для настройки соеденений на SSH и HTTPS порты (можно задать нестандартные) по TCP, 
-#разрешаем все на интерфейсе loopback) и устанавливаем hashicorp VAULT и jq.
+#stage1. настраиваем ufw (задаем интерфейс для настройки соеденений на SSH и HTTPS 
+#порты по TCP, разрешаем все на интерфейсе loopback) и устанавливаем VAULT, jq, mc и nginx
 
-int="eth0"
+if="eth0"
 ssh="22"
 https="443"
 
-sudo ufw allow in on "$int" to any port "$https" proto tcp
-sudo ufw allow in on "$int" to any port "$ssh" proto tcp
+sudo ufw allow in on "$if" to any port "$https" proto tcp
+sudo ufw allow in on "$if" to any port "$ssh" proto tcp
 sudo ufw allow in on lo
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -43,9 +43,10 @@ sudo apt-get update
 sudo apt-get install vault jq mc nginx -y
 sudo mkdir /etc/nginx/ssl
 
-
+echo "Now we have installed NGINX, JQ, MC and hashicorp VAULT. Did us? "
 ```  
-result  
+result 
+
 ```bash 
 ubuntu@test:~$ sudo ufw status
 Status: active
@@ -67,6 +68,7 @@ Common commands:
     write       Write data, configuration, and secrets
 ...
 ```
+
 отредактируем файл конфигурации `/etc/vault.d/vault.hcl`  
 
 ```
@@ -82,17 +84,18 @@ listener "tcp" {
 ```
 
 Включим и запустим сервис
-`sudo systemctl enable vault` и `sudo systemctl start vault`
+`sudo systemctl enable vault` , `sudo systemctl start vault` и `export VAULT_ADDR=http://127.0.0.1:8200`  
+
 Получаем ключи распечатки и начальный токен root  `vault operator init` 
 ```bash
 vault operator init
-Unseal Key 1: +/Gh7QQZDDECMn3URczn8NMfMZxUD5vldhS2YuNYtEQa
-Unseal Key 2: qNFWjCCoYt7wcc9E0j47q2cyukZSuthP0UXaZ8A0Zfko
-Unseal Key 3: bUXwx52LlZ7+MEHHgf1JOkgiMFbLxOGWz9PUKZpdnihk
-Unseal Key 4: vF7kC3Eokqr2WGgDhYw1no2+Ry1ZZWcBD8T9VpPlt2lb
-Unseal Key 5: yr5ZZ3izM7nGYGASI3kQzNs8pQlZHZQfHcP3VUnwkTS+
+Unseal Key 1: kqc+xyicXronwN8E6RRuXJMNqkBvpwnnXO/r5dZa5YhH
+Unseal Key 2: 5XVRWf77S5nmRGwJX4HW18Zmx2qRV7A0qhyhyN/xLnRK
+Unseal Key 3: kuDZ5FC++t6vI60hknkG1JNaS6Gox1MwC1Ximfyrr7Mv
+Unseal Key 4: KTi00qBFCXmQkoo7nkF8bO2He9VG5P/O3pYq4EWCpcdQ
+Unseal Key 5: yvupOZDHSHz/oOygfdwYNZ7Mm1FO+v4if0R4gvm66jmX
 
-Initial Root Token: s.TpYL9LAxxXmuVKFCaQGHxAaM
+Initial Root Token: s.l5W8uB7C1o1qVKiEnd3t7otS
 ...
 ```
 
@@ -100,21 +103,20 @@ Initial Root Token: s.TpYL9LAxxXmuVKFCaQGHxAaM
 ключи
 ```bash 
 sudo tee /root/.vault-keys <<EOF
-+/Gh7QQZDDECMn3URczn8NMfMZxUD5vldhS2YuNYtEQa
+kuDZ5FC++t6vI60hknkG1JNaS6Gox1MwC1Ximfyrr7Mv
 qNFWjCCoYt7wcc9E0j47q2cyukZSuthP0UXaZ8A0Zfko
-bUXwx52LlZ7+MEHHgf1JOkgiMFbLxOGWz9PUKZpdnihk
+5XVRWf77S5nmRGwJX4HW18Zmx2qRV7A0qhyhyN/xLnRK
 EOF
 ```
 токен
 ```bash 
 sudo tee /root/.vault-token <<EOF
-s.TpYL9LAxxXmuVKFCaQGHxAaM
+s.l5W8uB7C1o1qVKiEnd3t7otS
 EOF
-``
+```
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
 
-Merge 4+5
 
 
 5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.
