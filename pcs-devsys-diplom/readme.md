@@ -21,17 +21,28 @@ Merge 2+3
 
 script
 
-```
+```bash
 #!/bin/bash
-sudo ufw allow in on eth0 to any port 443 proto tcp
-sudo ufw allow in on eth0 to any port 22 proto tcp
+
+#stage1. настраиваем ufw (задаем интерфейс для настройки соеденений на SSH и HTTPS порты по TCP, 
+#разрешаем все на интерфейсе loopback) и устанавливаем hashicorp VAULT и jq.
+
+if=eth0
+ssh=22
+https=443
+
+sudo ufw allow in on $if to any port $https proto tcp
+sudo ufw allow in on $if to any port $ssh proto tcp
 sudo ufw allow in on lo
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw --force enable
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install vault
+sudo apt-get update
+sudo apt-get install vault -y
+sudo apt install jq -y 
+
 ```  
 result  
 ```bash 
@@ -66,10 +77,12 @@ Merge 4+5
 Скрипт
 
 ```bash 
-#!/bin/bash  
-sudo apt install jq -y  
-export VAULT_ADDR=http://127.0.0.1:8200  
-export VAULT_TOKEN=root  
+#!/bin/bash 
+#stage2. Устанавливаемнастраиваем VAULT
+
+VAULT_ADDR=http://127.0.0.1:8200  
+VAULT_TOKEN=root 
+
 tee admin-policy.hcl <<EOF  
 # Enable secrets engine  
 path "sys/mounts/*" {  
