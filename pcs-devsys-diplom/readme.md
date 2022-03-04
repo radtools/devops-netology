@@ -197,6 +197,48 @@ server {
   - генерируем новый сертификат так, чтобы не переписывать конфиг nginx;
   - перезапускаем nginx для применения нового сертификата.
 
+```
+#!/bin/bash
+
+VAULT_TOKEN="s.FJQLbRVNzCp8GcsqfryFvglP"
+VAULT_ADDR="http://127.0.0.1:8200"
+domain="zs-fond.online"
+sub="test"
+
+vault write -format=json pki_int/issue/"$domain"-role common_name="$sub.$domain" ttl="744h" > cert.json
+
+cat cert.json | jq -r '.data.private_key' > key.pem
+
+cat cert.json | jq -r '.data.certificate' > cert.pem
+
+cat cert.json | jq -r '.data.issuing_ca' >> cert.pem
+
+systemctl restart nginx
+```
+вызов скрипта выдает ошибку: 
+
+```
+sudo /scripts/renew_site1.sh
+Error writing data to pki_int/issue/zs-fond.online-role: Error making API request.
+
+URL: PUT http://127.0.0.1:8200/v1/pki_int/issue/zs-fond.online-role
+Code: 503. Errors:
+
+* Vault is sealed
+Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xe" for details.
+```
+Vault запечатан, нужно его сначала распечатать  
+Нужно его распечатать сначала.
+
+по этому добавим в начало скрипта вызов скрипта unseal  
+
+![image](https://user-images.githubusercontent.com/93760545/156764720-9a43cd9d-a111-4d4e-96e1-4435a6452eb5.png)
+  
+
+`/bin/bash /scripts/unseal.sh`
+
+
 10. Поместите скрипт в crontab, чтобы сертификат обновлялся какого-то числа каждого месяца в удобное для вас время.
 
 ## Результат
