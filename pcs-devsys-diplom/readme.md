@@ -72,10 +72,6 @@ Common commands:
 отредактируем файл конфигурации `/etc/vault.d/vault.hcl`  
 
 ```
-ui = true
-storage "file" {
-  path = "/opt/vault/data"
-}
 # HTTP listener
 listener "tcp" {
   address = "127.0.0.1:8200"
@@ -84,42 +80,41 @@ listener "tcp" {
 ```
 
 Включим и запустим сервис
-`sudo systemctl enable vault` , `sudo systemctl start vault` и `export VAULT_ADDR=http://127.0.0.1:8200`  
+`systemctl enable vault --now` , `sudo systemctl start vault` и `export VAULT_ADDR=http://127.0.0.1:8200` 
+
+Чтобы данная системная переменная создавалась каждый раз при входе пользователя в систему, редактируем файл: `/etc/environment`  
+добавим   
+`VAULT_ADDR=http://127.0.0.1:8200`
 
 Получаем ключи распечатки и начальный токен root  `vault operator init` 
 ```bash
 vault operator init
-Unseal Key 1: kqc+xyicXronwN8E6RRuXJMNqkBvpwnnXO/r5dZa5YhH
-Unseal Key 2: 5XVRWf77S5nmRGwJX4HW18Zmx2qRV7A0qhyhyN/xLnRK
-Unseal Key 3: kuDZ5FC++t6vI60hknkG1JNaS6Gox1MwC1Ximfyrr7Mv
-Unseal Key 4: KTi00qBFCXmQkoo7nkF8bO2He9VG5P/O3pYq4EWCpcdQ
-Unseal Key 5: yvupOZDHSHz/oOygfdwYNZ7Mm1FO+v4if0R4gvm66jmX
+Unseal Key 1: Le+FRdmRnftm1D23KXXyllHYNTznY5ooed90U6w9wf97
+Unseal Key 2: nVcBktOzqlsGHO7WhuLhouzxQRAVC+Yhdg8RgFVfdcR+
+Unseal Key 3: u2BfTG5tadiwEPSINPd6jJ0/swtQoTlxsVcClsXA6rvK
+Unseal Key 4: YKL7RC4iQa1lO9JibkzLq80T0GDSyZg+uHBAfqkEa5nN
+Unseal Key 5: nwY5IRnpJZ+aaBSH6/YWUT2SMSH62AiX8ZbjFJjeHsMD
 
-Initial Root Token: s.l5W8uB7C1o1qVKiEnd3t7otS
+Initial Root Token: s.FJQLbRVNzCp8GcsqfryFvglP
 ...
-```
 
-Сохраняем их в файл:  
-ключи
-```bash 
-sudo tee /root/.vault-keys <<EOF
-kuDZ5FC++t6vI60hknkG1JNaS6Gox1MwC1Ximfyrr7Mv
-qNFWjCCoYt7wcc9E0j47q2cyukZSuthP0UXaZ8A0Zfko
-5XVRWf77S5nmRGwJX4HW18Zmx2qRV7A0qhyhyN/xLnRK
-EOF
-```
-токен
-```bash 
-sudo tee /root/.vault-token <<EOF
-s.l5W8uB7C1o1qVKiEnd3t7otS
-EOF
+
+Vault сейчас запечатан (sealed) надо его распечатать
+
+Для этого создадим скипт
+
+```bash
+#!/bin/bash
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+sleep 10
+vault operator unseal Le+FRdmRnftm1D23KXXyllHYNTznY5ooed90U6w9wf97
+vault operator unseal nVcBktOzqlsGHO7WhuLhouzxQRAVC+Yhdg8RgFVfdcR+
+vault operator unseal YKL7RC4iQa1lO9JibkzLq80T0GDSyZg+uHBAfqkEa5nN
 ```
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
 
-
-
-5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.
 
 Скрипт
 
@@ -166,6 +161,11 @@ sudo ln -s "$ssl_dir"/key.pem /etc/nginx/ssl
 sudo ln -s "$ssl_dir"/cert.pem /etc/nginx/ssl
 
 ```
+5. Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе.
+
+Добавил  
+![image](https://user-images.githubusercontent.com/93760545/156750860-29f32e33-7118-4443-b285-af007199bceb.png)
+
 
 6. Установите nginx.
 
@@ -184,7 +184,7 @@ server {
        ssl_certificate_key "/etc/nginx/ssl/key.pem";
 ```
 
-Добавил CA в список доверенных корневых центров сертификации  
+Добавил CA ([скачать сертификат CA](https://github.com/radtools/devops-netology/blob/main/pcs-devsys-diplom/CA.crt)) в список доверенных корневых центров сертификации  
 
 8. Откройте в браузере на хосте https адрес страницы, которую обслуживает сервер nginx.
 
