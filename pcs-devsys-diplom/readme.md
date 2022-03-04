@@ -83,8 +83,34 @@ listener "tcp" {
 
 Включим и запустим сервис
 `sudo systemctl enable vault` и `sudo systemctl start vault`
+Получаем ключи распечатки и начальный токен root  `vault operator init` 
+```bash
+vault operator init
+Unseal Key 1: +/Gh7QQZDDECMn3URczn8NMfMZxUD5vldhS2YuNYtEQa
+Unseal Key 2: qNFWjCCoYt7wcc9E0j47q2cyukZSuthP0UXaZ8A0Zfko
+Unseal Key 3: bUXwx52LlZ7+MEHHgf1JOkgiMFbLxOGWz9PUKZpdnihk
+Unseal Key 4: vF7kC3Eokqr2WGgDhYw1no2+Ry1ZZWcBD8T9VpPlt2lb
+Unseal Key 5: yr5ZZ3izM7nGYGASI3kQzNs8pQlZHZQfHcP3VUnwkTS+
 
-Получаем ключи распечатки и начальный токен root  `vault operator init`
+Initial Root Token: s.TpYL9LAxxXmuVKFCaQGHxAaM
+...
+```
+
+Сохраняем их в файл:  
+ключи
+```bash 
+sudo tee /root/.vault-keys <<EOF
++/Gh7QQZDDECMn3URczn8NMfMZxUD5vldhS2YuNYtEQa
+qNFWjCCoYt7wcc9E0j47q2cyukZSuthP0UXaZ8A0Zfko
+bUXwx52LlZ7+MEHHgf1JOkgiMFbLxOGWz9PUKZpdnihk
+EOF
+```
+токен
+```bash 
+sudo tee /root/.vault-token <<EOF
+s.TpYL9LAxxXmuVKFCaQGHxAaM
+EOF
+``
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
 
