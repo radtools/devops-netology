@@ -231,7 +231,7 @@ See "systemctl status nginx.service" and "journalctl -xe" for details.
 Vault запечатан, нужно его сначала распечатать  
 Нужно его распечатать сначала.
 
-по этому добавим в начало скрипта вызов скрипта unseal  
+по этому добавим в начало скрипта вызов скрипта unseal.sh  
 
 ![image](https://user-images.githubusercontent.com/93760545/156764720-9a43cd9d-a111-4d4e-96e1-4435a6452eb5.png)
   
