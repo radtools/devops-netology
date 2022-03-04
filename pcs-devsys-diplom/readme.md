@@ -97,7 +97,7 @@ Unseal Key 5: nwY5IRnpJZ+aaBSH6/YWUT2SMSH62AiX8ZbjFJjeHsMD
 
 Initial Root Token: s.FJQLbRVNzCp8GcsqfryFvglP
 ...
-
+```
 
 Vault сейчас запечатан (sealed) надо его распечатать
 
@@ -111,6 +111,7 @@ sleep 10
 vault operator unseal Le+FRdmRnftm1D23KXXyllHYNTznY5ooed90U6w9wf97
 vault operator unseal nVcBktOzqlsGHO7WhuLhouzxQRAVC+Yhdg8RgFVfdcR+
 vault operator unseal YKL7RC4iQa1lO9JibkzLq80T0GDSyZg+uHBAfqkEa5nN
+
 ```
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
