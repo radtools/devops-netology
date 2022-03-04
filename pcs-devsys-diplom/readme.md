@@ -124,102 +124,67 @@ EOF
 Скрипт
 
 ```bash 
-#!/bin/bash 
-#stage2. Устанавливаемнастраиваем VAULT
+#!/bin/bash
 
-VAULT_ADDR=http://127.0.0.1:8200  
-VAULT_TOKEN=root 
+VAULT_TOKEN="root"
+VAULT_ADDR="http://127.0.0.1:8200"
+domain="zs-fond.online"
+sub="test"
+ssl_dir="/home/ubuntu"
 
-tee admin-policy.hcl <<EOF  
-# Enable secrets engine  
-path "sys/mounts/*" {  
- capabilities = [ "create", "read", "update", "delete", "list" ]  
-}  
+vault secrets enable pki
 
-# List enabled secrets engine  
-path "sys/mounts" {  
- capabilities = [ "read", "list" ]  
-}  
+vault secrets tune -max-lease-ttl=87600h pki
 
-# Work with pki secrets engine  
-path "pki*" {  
- capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]  
-} 
-EOF  
-# enable policy  
-vault policy write admin admin-policy.hcl  
-#Generating root CA  
-#enable pki  
-vault secrets enable pki  
-#tune pki ttl to 87600 hours  
-vault secrets tune -max-lease-ttl=87600h pki  
-#gen&save root cert in CA_cert.crt to domain zs-fond.online  
-vault write -field=certificate pki/root/generate/internal \  
-     common_name="zs-fond.online" \  
-     ttl=87600h > CA_cert.crt  
-#Configure the CA and CRL URLs  
-vault write pki/config/urls \  
-     issuing_certificates="$VAULT_ADDR/v1/pki/ca" \  
-     crl_distribution_points="$VAULT_ADDR/v1/pki/crl"  
-#Generate intermediate CA  
-#enable pki secrets at pki_int path.  
-vault secrets enable -path=pki_int pki  
-#tune pki_int TTL to 43800 hrs  
-vault secrets tune -max-lease-ttl=43800h pki_int  
-#generate an intermediate and save the CSR as pki_intermediate.csr  
-vault write -format=json pki_int/intermediate/generate/internal \  
-     common_name="zs-fond.online Intermediate Authority" \  
-     | jq -r '.data.csr' > pki_intermediate.csr  
+vault write -field=certificate pki/root/generate/internal common_name="$domain" ttl=87600h > CA.crt
 
-#Sign the intermediate certificate with the root CA private key,  
-#and save the generated certificate as intermediate.cert.pem  
-vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \  
-     format=pem_bundle ttl="43800h" \  
-     | jq -r '.data.certificate' > intermediate.cert.pem  
-#importing cert back to vault  
-vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem  
-#creating a role  
-#Create a role named zs-fond which allows subdomains.  
-vault write pki_int/roles/zs-fond \  
-     allowed_domains="zs-fond.online" \  
-     allow_subdomains=true \  
-     max_ttl="720h"  
-#Request certificates  
-json_crt=`vault write -format=json pki_int/issue/zs-fond common_name="test.zs-fond.online" ttl="720h"`  
-#export crt  
-echo $json_crt|jq -r '.data.certificate'>test.zs-fond.online.crt  
-#export key  
-echo $json_crt|jq -r '.data.private_key'>test.zs-fond.online.key  
-#install ROOT CA  
-sudo cp CA_cert.crt /usr/local/share/ca-certificates/  
-sudo update-ca-certificates  
+
+vault write pki/config/urls issuing_certificates="$VAULT_ADDR/v1/pki/ca" crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
+
+vault secrets enable -path=pki_int pki
+
+vault secrets tune -max-lease-ttl=43800h pki_int
+
+vault write -format=json pki_int/intermediate/generate/internal common_name="$domain Intermediate Authority" | jq -r '.data.csr' > pki_intermediate.csr
+
+vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' > intermediate.cert.pem
+
+vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
+
+vault write pki_int/roles/"$domain"-role allowed_domains="$domain" allow_subdomains=true max_ttl="744h"
+
+vault write -format=json pki_int/issue/"$domain"-role common_name="$sub.$domain" ttl="744h" > cert.json
+
+cat cert.json | jq -r '.data.private_key' > key.pem
+
+cat cert.json | jq -r '.data.certificate' > cert.pem
+
+cat cert.json | jq -r '.data.issuing_ca' >> cert.pem
+
+sudo mkdir /etc/nginx/ssl
+sudo ln -s "$ssl_dir"/key.pem /etc/nginx/ssl
+sudo ln -s "$ssl_dir"/cert.pem /etc/nginx/ssl
+
 ```
 
 6. Установите nginx.
 
-```bash
-ubuntu@test:~$ apt install nginx
-...
-ubuntu@test:~$ systemctl status nginx
-● nginx.service - A high performance web server and a reverse proxy server
-     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-     Active: active (running) since Thu 2022-03-03 06:08:30 UTC; 16s ago
-      ....
-     CGroup: /system.slice/nginx.service
-             ├─10704 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
-             └─10705 nginx: worker process
-```
+Установлен в пп 3
 
 7. По инструкции ([ссылка](https://nginx.org/en/docs/http/configuring_https_servers.html)) настройте nginx на https, используя ранее подготовленный сертификат:
   - можно использовать стандартную стартовую страницу nginx для демонстрации работы сервера;
   - можно использовать и другой html файл, сделанный вами;
+```
+server {
+       listen       443 ssl http2 default_server;
+       server_name  test.zs-fond.online;
+       root         /var/www/html;
 
-```bash 
-sudo mkdir /etc/nginx/ssl  #создаем директорию для хранения сертификатов ssl
-sudo ln -s /home/ubuntu/test.zs-fond.online.crt /etc/nginx/ssl #создаем символьную ссылку на crt для nginx
-sudo ln -s /home/ubuntu/test.zs-fond.online.key /etc/nginx/ssl #создаем символьную ссылку на key для nginx
+       ssl_certificate "/etc/nginx/ssl/cert.pem";
+       ssl_certificate_key "/etc/nginx/ssl/key.pem";
 ```
 
+Добавил CA в список доверенных корневых центров сертификации  
 
 8. Откройте в браузере на хосте https адрес страницы, которую обслуживает сервер nginx.
 
