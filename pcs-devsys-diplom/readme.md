@@ -24,15 +24,15 @@ script
 ```bash
 #!/bin/bash
 
-#stage1. настраиваем ufw (задаем интерфейс для настройки соеденений на SSH и HTTPS порты по TCP, 
+#stage1. настраиваем ufw (задаем интерфейс для настройки соеденений на SSH и HTTPS порты (можно задать нестандартные) по TCP, 
 #разрешаем все на интерфейсе loopback) и устанавливаем hashicorp VAULT и jq.
 
-if=eth0
-ssh=22
-https=443
+int="eth0"
+ssh="22"
+https="443"
 
-sudo ufw allow in on $if to any port $https proto tcp
-sudo ufw allow in on $if to any port $ssh proto tcp
+sudo ufw allow in on "$int" to any port "$https" proto tcp
+sudo ufw allow in on "$int" to any port "$ssh" proto tcp
 sudo ufw allow in on lo
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -40,8 +40,9 @@ sudo ufw --force enable
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update
-sudo apt-get install vault -y
-sudo apt install jq -y 
+sudo apt-get install vault jq mc nginx -y
+sudo mkdir /etc/nginx/ssl
+
 
 ```  
 result  
@@ -66,6 +67,24 @@ Common commands:
     write       Write data, configuration, and secrets
 ...
 ```
+отредактируем файл конфигурации `/etc/vault.d/vault.hcl`  
+
+```
+ui = true
+storage "file" {
+  path = "/opt/vault/data"
+}
+# HTTP listener
+listener "tcp" {
+  address = "127.0.0.1:8200"
+  tls_disable = 1
+}
+```
+
+Включим и запустим сервис
+`sudo systemctl enable vault` и `sudo systemctl start vault`
+
+Получаем ключи распечатки и начальный токен root  `vault operator init`
 
 4. Cоздайте центр сертификации по инструкции ([ссылка](https://learn.hashicorp.com/tutorials/vault/pki-engine?in=vault/secrets-management)) и выпустите сертификат для использования его в настройке веб-сервера nginx (срок жизни сертификата - месяц).
 
