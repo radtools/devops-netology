@@ -114,7 +114,7 @@ EOF
 ```bash
 cat << EOF > /root//homework_docker/info/test_file_2.txt
 Aquila non captat muscas
-Linux if fun!
+Linux is fun!
 EOF
 ```
 
@@ -143,7 +143,7 @@ Creating text file from centos container
 More testing, more success, more fame.
 root@c8e3696b5f01:/info# cat test_file_2.txt
 Aquila non captat muscas
-Linux if fun!
+Linux is fun!
 ```
 
 
