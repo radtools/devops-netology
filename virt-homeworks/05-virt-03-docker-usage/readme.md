@@ -44,6 +44,32 @@ Hey, Netology
 ```
 Опубликуйте созданный форк в своем репозитории и предоставьте ответ в виде ссылки на докерхаб-репо.
 
+создадим рабочую директорию mkdir homework_docker  
+скачаем образ докер `docker pull httpd` (The Apache HTTP Server Project)  
+создадим dockerfile  
+```bash
+cat << EOF > dockerfile.txt
+FROM httpd
+RUN echo '<html><head>Hey, Netology</head><body><h1>I am kinda DevOps now!</h1></body></html>' > /usr/local/apache2/htdocs/index.html
+EOF
+```
+
+Запустим наш docker  
+`docker run -d -p 8080:80 radtools/netology:0.1_apache`  
+Проверим в браузере:  
+![image](https://user-images.githubusercontent.com/93760545/158119154-b9242649-37aa-41d4-a984-2d6aa7fa8d19.png)
+
+Ура, оно работает...  
+
+Логинимся в hub.docker.com  
+`docker login -u radtools`
+
+И пушим свое чудо в репу  
+
+`docker push radtools/netology:0.1_apache`  
+
+[link to docker](https://hub.docker.com/layers/radtools/netology/0.1_apache/images/sha256-a6f915d4b90dac60a4239486421fc8fb93a425dc826f591e645ea86de8222f48?context=explore)  
+
 ## Задача 3 
 
 - Запустите первый контейнер из образа centos c любым тэгом в фоновом режиме, подключив папку info из текущей рабочей директории на хостовой машине в /share/info контейнера;
