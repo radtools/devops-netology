@@ -107,7 +107,7 @@ Creating text file from centos container
 More testing, more success, more fame.
 EOF
 ```
-Запустим второй контейнер debian с примонтированным каталогом info в info: 
+Запустим второй контейнер debian с примонтированным каталогом info в info:   
 `docker run -v /root/homework_docker/info:/info --name debian-container -d -t debian`  
 Создадим файл на хостовой машине:
 
@@ -136,7 +136,15 @@ drwxr-xr-x 1 root root 4096 Mar 14 08:14 ..
 -rw-r--r-- 1 root root   80 Mar 14 08:22 test_file_1.txt
 -rw-r--r-- 1 root root   39 Mar 14 08:27 test_file_2.txt
 ```
-
+и еще 
+```bash
+root@c8e3696b5f01:/info# cat test_file_1.txt
+Creating text file from centos container
+More testing, more success, more fame.
+root@c8e3696b5f01:/info# cat test_file_2.txt
+Aquila non captat muscas
+Linux if fun!
+```
 
 
 ### Как cдавать задание
