@@ -92,6 +92,23 @@ EOF
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в /info контейнера.
 
 ---
+Для начала нужно получить эти образы  
+`docker pull centos && docker pull debian:latest`  
+затем на хостовой машине создадим папку "info"  
+`mkdir info`  
+запустим контейнер Centos с примонтированным каталогом info в share/info:  
+`docker run -v /root/homework_docker/info:/share/info --name centos-container -d -t centos`  
+подключимся к контейнеру:  
+`docker exec -i -t 73b4e1bdee96  bash`  
+создадим текстовый файл
+```bash
+cat << EOF > test_file_1.txt
+Creating text file from centos container
+More testing, more success, more fame.
+EOF
+```
+
+
 
 ### Как cдавать задание
 
