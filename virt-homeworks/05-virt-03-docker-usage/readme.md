@@ -99,13 +99,42 @@ EOF
 запустим контейнер Centos с примонтированным каталогом info в share/info:  
 `docker run -v /root/homework_docker/info:/share/info --name centos-container -d -t centos`  
 подключимся к контейнеру:  
-`docker exec -i -t 73b4e1bdee96  bash`  
+`docker exec -i -t 56cb9546bb63  bash`  
 создадим текстовый файл
 ```bash
-cat << EOF > test_file_1.txt
+cat << EOF > /share/info/test_file_1.txt
 Creating text file from centos container
 More testing, more success, more fame.
 EOF
+```
+Запустим второй контейнер debian с примонтированным каталогом info в info: 
+`docker run -v /root/homework_docker/info:/info --name debian-container -d -t debian`  
+Создадим файл на хостовой машине:
+
+```bash
+cat << EOF > /root//homework_docker/info/test_file_2.txt
+Aquila non captat muscas
+Linux if fun!
+EOF
+```
+
+Посмотрим запущенные контейнеры:  
+```bash
+docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED              STATUS              PORTS     NAMES
+c8e3696b5f01   debian    "bash"        56 seconds ago       Up 55 seconds                 debian-container
+56cb9546bb63   centos    "/bin/bash"   About a minute ago   Up About a minute             centos-container
+```
+Подключимся к debian (c8e3696b5f01)  
+`docker exec -i -t c8e3696b5f01  bash`
+И взглянем на содержимое директории info:  
+```bash
+root@c8e3696b5f01:/info# ls -la
+total 16
+drwxr-xr-x 2 root root 4096 Mar 14 08:23 .
+drwxr-xr-x 1 root root 4096 Mar 14 08:14 ..
+-rw-r--r-- 1 root root   80 Mar 14 08:22 test_file_1.txt
+-rw-r--r-- 1 root root   39 Mar 14 08:27 test_file_2.txt
 ```
 
 
