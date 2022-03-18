@@ -28,3 +28,4 @@
 - Скриншот работающего веб-интерфейса Grafana с текущими метриками
 
 ![image](https://user-images.githubusercontent.com/93760545/158943413-47e19c05-4631-4997-b81f-061d751b6c8c.png)
+![image](https://user-images.githubusercontent.com/93760545/158944015-9e12e630-05d4-4fc6-a03d-5e20d6ecc25c.png)
