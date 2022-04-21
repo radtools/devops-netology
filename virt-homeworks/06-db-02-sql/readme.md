@@ -26,14 +26,21 @@ volumes:
 
 dbname="test_db"
 username="test-admin-user"
+
 psql $dbname $username << EOF
 SELECT * FROM test;
 EOF
 #проверим есть ли бд test_db. Если ее нет - создадим.  
 sudo -u postgres psql -c "SELECT 1 FROM pg_database WHERE datname = 'test_db'" | grep -q 1 || sudo -u postgres psql -c "CREATE DATABASE test_db" 
+#создадим пользователя test-admin-user
+sudo -u postgres psql -c 'CREATE USER "test-admin-user";'
 
 #sudo -u postgres psql -c "CREATE USER "test-admin-user" WITH PASSWORD "qwerty";"
 #sudo -u postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'test_db'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE test_db"
 
 
 #sudo -u postgres bash -c "psql -c \"CREATE USER test-admin-user WITH PASSWORD 'qwerty';\""
+ sudo -u postgres psql -c 'CREATE USER "test-admin-user";'
+
+
+
