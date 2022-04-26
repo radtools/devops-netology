@@ -69,22 +69,18 @@ CREATE TABLE orders  --создадим таблицу заказов "orders"
 
 CREATE TABLE clients 
 (
-	clients_id integer PRIMARY KEY,
-	фамилия varchar(64) NOT NULL,
-	"страна проживания" varchar(64)NOT NULL,
-	заказ integer,
-	FOREIGN KEY (заказ) REFERENCES orders (Id)
+	clients_id integer PRIMARY KEY, --создадим столбец и зададим как первичный ключ (одновременно UNIQUE и NOT NULL)
+	ФИО varchar(64) NOT NULL, --создадим столбец "ФИО" и укажем что колонке нельзя присваивать значение NULL
+	"страна проживания" varchar(64)NOT NULL, /*создадим столбец "страна проживания" и укажем что колонке 
+	нельзя присваивать значение NULL*/
+	заказ integer, --создадим столбец "заказ"
+	FOREIGN KEY (заказ) REFERENCES orders (orders_id)  /*создадим "внешний ключ" для связи между таблицами
+	с указанием на имя связанной таблицы "orders"*/
 );
 
-CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
-GRANT SELECT ON TABLE public.clients TO "test-simple-user";
-GRANT INSERT ON TABLE public.clients TO "test-simple-user";
-GRANT UPDATE ON TABLE public.clients TO "test-simple-user";
-GRANT DELETE ON TABLE public.clients TO "test-simple-user";
-GRANT SELECT ON TABLE public.orders TO "test-simple-user";
-GRANT INSERT ON TABLE public.orders TO "test-simple-user";
-GRANT UPDATE ON TABLE public.orders TO "test-simple-user";
-GRANT DELETE ON TABLE public.orders TO "test-simple-user";
+CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN; --создадим пользователя test-simple-user
+GRANT UPDATE, SELECT,INSERT, DELETE ON TABLE public.clients TO "test-simple-user"; --дадим права test-simple-user на таблицу clients
+GRANT UPDATE, SELECT,INSERT, DELETE ON TABLE public.orders TO "test-simple-user";  --дадим права test-simple-user на таблицу orders
 ```
 
 
