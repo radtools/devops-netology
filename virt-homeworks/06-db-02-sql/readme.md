@@ -1,46 +1,91 @@
-```
-version: "3.9"  
-services:  
-  postgres:  
-    image: postgres:13.3  
-    environment:  
-      POSTGRES_DB: "pgdb"  
-      POSTGRES_USER: "pguser"  
-      POSTGRES_PASSWORD: "pgpwd"  
-      PGDATA: "/var/lib/postgresql/data/pgdata"  
-    volumes:  
-      - ../2. Init Database:/docker-entrypoint-initdb.d  
-      - data-vol:/var/lib/postgresql/data/  
-      - backup-vol:/backups  
-    ports:  
-      - "5432:5432"  
-volumes:  
-  data-vol: {}  
-  backup-vol: {}  
-```
+
+# Домашнее задание к занятию "6.2. SQL"
+
+## Задача 1
+
+Используя docker поднимите инстанс PostgreSQL (версию 12) c 2 volume, 
+в который будут складываться данные БД и бэкапы.
+
+Приведите получившуюся команду или docker-compose манифест.
 
 
 ```bash
+
 #!/bin/bash
-#!/bin/sh
 
-dbname="test_db"
-username="test-admin-user"
+vol1="data-vol"                    #укажем в переменной наименование тома vol1
+vol2="backup-vol"                  #укажем в переменной наименование тома vol2
 
-psql $dbname $username << EOF
-SELECT * FROM test;
-EOF
-#проверим есть ли бд test_db. Если ее нет - создадим.  
-sudo -u postgres psql -c "SELECT 1 FROM pg_database WHERE datname = 'test_db'" | grep -q 1 || sudo -u postgres psql -c "CREATE DATABASE test_db" 
-#создадим пользователя test-admin-user
-sudo -u postgres psql -c 'CREATE USER "test-admin-user";'
+sudo apt install docker -y         #установим docker (если он не установлен)
+sudo docker pull postgres:12       #забираем образ Postgesql12 с docker HUB
+sudo docker volume create "$vol1"  #создадим vol для data
+sudo docker volume create "$vol2"  #создадим vol для backup
+sudo docker run --rm --name psql-docker -d -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v "$vol1":/var/lib/postgresql/data -v "$vol2":/var/lib/postgresql postgres:12
+sudo docker exec -it psql-docker bash #запустим bash в контейнере docker
 
-#sudo -u postgres psql -c "CREATE USER "test-admin-user" WITH PASSWORD "qwerty";"
-#sudo -u postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'test_db'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE test_db"
+```
+## Задача 2
+
+В БД из задачи 1: 
+- создайте пользователя test-admin-user и БД test_db
+- в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже)
+- предоставьте привилегии на все операции пользователю test-admin-user на таблицы БД test_db
+- создайте пользователя test-simple-user  
+- предоставьте пользователю test-simple-user права на SELECT/INSERT/UPDATE/DELETE данных таблиц БД test_db
+
+Таблица orders:
+- id (serial primary key)
+- наименование (string)
+- цена (integer)
+
+Таблица clients:
+- id (serial primary key)
+- фамилия (string)
+- страна проживания (string, index)
+- заказ (foreign key orders)
+
+Приведите:
+- итоговый список БД после выполнения пунктов выше,
+- описание таблиц (describe)
+- SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
+- список пользователей с правами над таблицами test_db
+
+Для начала запустим psql примерно так  
+``root@1490454abb7c:/#psql -U postgres -d postgres``
+
+Далее скормим psql SQL скрипт:
+
+```SQL
+CREATE DATABASE test_db;   --создадим БД с названием test_db
+CREATE ROLE "test-admin-user" SUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;  --создадим пользователя с админскими правами и именем test-admin-user
+
+CREATE TABLE orders 
+(
+id integer, 
+наименование varchar(128), 
+цена integer, 
+PRIMARY KEY (id) 
+);
+
+CREATE TABLE clients 
+(
+	id integer PRIMARY KEY,
+	фамилия varchar(64),
+	"страна проживания" varchar(64),
+	заказ integer,
+	FOREIGN KEY (заказ) REFERENCES orders (Id)
+);
+
+CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
+GRANT SELECT ON TABLE public.clients TO "test-simple-user";
+GRANT INSERT ON TABLE public.clients TO "test-simple-user";
+GRANT UPDATE ON TABLE public.clients TO "test-simple-user";
+GRANT DELETE ON TABLE public.clients TO "test-simple-user";
+GRANT SELECT ON TABLE public.orders TO "test-simple-user";
+GRANT INSERT ON TABLE public.orders TO "test-simple-user";
+GRANT UPDATE ON TABLE public.orders TO "test-simple-user";
+GRANT DELETE ON TABLE public.orders TO "test-simple-user";
+```
 
 
-#sudo -u postgres bash -c "psql -c \"CREATE USER test-admin-user WITH PASSWORD 'qwerty';\""
- sudo -u postgres psql -c 'CREATE USER "test-admin-user";'
-
-
-
+psql -U postgres -d postgres
