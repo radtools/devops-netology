@@ -72,7 +72,7 @@ CREATE TABLE orders  --создадим таблицу заказов "orders"
 (
          orders_id integer PRIMARY KEY, --создадим столбец и зададим как первичный ключ (одновременно UNIQUE и NOT NULL)
          наименование varchar(128) NOT NULL, --создадим столбец "наименование" и укажем что колонке нельзя присваивать значение NULL
-         цена integer NOT NULL, --создадим столбец "цена" и укажем что колонке нельзя присваивать значение NULL
+         цена integer NOT NULL --создадим столбец "цена" и укажем что колонке нельзя присваивать значение NULL
 );
 
 CREATE TABLE clients 
@@ -93,3 +93,12 @@ GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.orders TO "test-simple-user
 
 
 psql -U postgres -d postgres
+
+
+update  clients set заказ = 3 where clients_id = 1;
+update  clients set заказ = 4 where clients_id = 2;
+update  clients set заказ = 5 where clients_id = 3;
+
+
+
+
