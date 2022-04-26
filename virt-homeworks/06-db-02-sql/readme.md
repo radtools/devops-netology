@@ -8,6 +8,7 @@
 
 Приведите получившуюся команду или docker-compose манифест.
 
+Подготовительные работы, поскольку хост fresh&clean, ставим все что нужно вытягиваем образ и запускаем его с примонтированными томами:
 
 ```bash
 
@@ -24,8 +25,14 @@ sudo docker run --rm --name psql-docker -d -e POSTGRES_PASSWORD=postgres -ti -p 
 sudo docker exec -it psql-docker bash #запустим bash в контейнере docker
 
 ```
+
+
+
+
 ## Задача 2
 
+<details>
+  <summary>Условия</summary>
 В БД из задачи 1: 
 - создайте пользователя test-admin-user и БД test_db
 - в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже)
@@ -49,7 +56,8 @@ sudo docker exec -it psql-docker bash #запустим bash в контейне
 - описание таблиц (describe)
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
 - список пользователей с правами над таблицами test_db
-
+</details>
+	
 Для начала запустим psql примерно так  
 ``root@1490454abb7c:/#psql -U postgres -d postgres``
 
