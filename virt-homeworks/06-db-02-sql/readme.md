@@ -79,8 +79,8 @@ CREATE TABLE clients
 );
 
 CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN; --создадим пользователя test-simple-user
-GRANT UPDATE, SELECT,INSERT, DELETE ON TABLE public.clients TO "test-simple-user"; --дадим права test-simple-user на таблицу clients
-GRANT UPDATE, SELECT,INSERT, DELETE ON TABLE public.orders TO "test-simple-user";  --дадим права test-simple-user на таблицу orders
+GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.clients TO "test-simple-user"; --дадим права test-simple-user на таблицу clients
+GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.orders TO "test-simple-user";  --дадим права test-simple-user на таблицу orders
 ```
 
 
