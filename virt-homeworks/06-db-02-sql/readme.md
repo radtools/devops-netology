@@ -95,9 +95,9 @@ GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.orders TO "test-simple-user
 psql -U postgres -d postgres
 
 
-update  clients set заказ = 3 where clients_id = 1;
-update  clients set заказ = 4 where clients_id = 2;
-update  clients set заказ = 5 where clients_id = 3;
+update  clients set заказ = 3 where clients_id = 1;  
+update  clients set заказ = 4 where clients_id = 2;  
+update  clients set заказ = 5 where clients_id = 3;  
 
 
 
