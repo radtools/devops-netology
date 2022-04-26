@@ -57,21 +57,21 @@ sudo docker exec -it psql-docker bash #запустим bash в контейне
 
 ```SQL
 CREATE DATABASE test_db;   --создадим БД с названием test_db
-CREATE ROLE "test-admin-user" SUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;  --создадим пользователя с админскими правами и именем test-admin-user
+CREATE ROLE "test-admin-user" SUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;  /*создадим пользователя с админскими 
+правами и именем test-admin-user*/
 
-CREATE TABLE orders 
+CREATE TABLE orders  --создадим таблицу заказов "orders"  
 (
-id integer, 
-наименование varchar(128), 
-цена integer, 
-PRIMARY KEY (id) 
+         orders_id integer PRIMARY KEY, --создадим столбец и зададим как первичный ключ (одновременно UNIQUE и NOT NULL)
+         наименование varchar(128) NOT NULL, --создадим столбец "наименование" и укажем что колонке нельзя присваивать значение NULL
+         цена integer NOT NULL, --создадим столбец "цена" и укажем что колонке нельзя присваивать значение NULL
 );
 
 CREATE TABLE clients 
 (
-	id integer PRIMARY KEY,
-	фамилия varchar(64),
-	"страна проживания" varchar(64),
+	clients_id integer PRIMARY KEY,
+	фамилия varchar(64) NOT NULL,
+	"страна проживания" varchar(64)NOT NULL,
 	заказ integer,
 	FOREIGN KEY (заказ) REFERENCES orders (Id)
 );
