@@ -27,8 +27,8 @@ sudo apt install docker -y         #установим docker (если он н�
 sudo docker pull postgres:12       #забираем образ Postgesql12 с docker HUB
 sudo docker volume create "$vol1"  #создадим vol для data
 sudo docker volume create "$vol2"  #создадим vol для backup
-sudo docker run --rm --name psql-docker -d -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v "$vol1":/var/lib/postgresql/data -v "$vol2":/var/lib/postgresql postgres:12
-sudo docker exec -it psql-docker bash #запустим bash в контейнере docker
+sudo docker run --rm --name pg-docker -d -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v "$vol1":/var/lib/postgresql/data -v "$vol2":/var/lib/backup postgres:12
+sudo docker exec -it pg-docker bash #запустим bash в контейнере docker
 
 ```
 
@@ -355,4 +355,12 @@ test_db=# explain select * from clients where заказ is not null;
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
 </details>
+
+Создадим дамп БД через pgdump  
+``pg_dump -U postgres test_db -f /var/lib/postgresql/dump_test.sql``  
+Остановим контейнер  
+``docker stop 3e89a4b99833``   
+Запустим новый контейнер с примонтированными docker volumes
+
+
 
