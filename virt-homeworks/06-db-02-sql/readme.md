@@ -90,8 +90,23 @@ CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOG
 GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.clients TO "test-simple-user"; --дадим права test-simple-user на таблицу clients
 GRANT UPDATE, SELECT, INSERT, DELETE ON TABLE public.orders TO "test-simple-user";  --дадим права test-simple-user на таблицу orders
 ```
+```SQL
+INSERT INTO orders --добавим данных в таблицу orders
+VALUES 
+(1, 'Шоколад', 10),
+(2, 'Принтер', 3000),
+(3, 'Книга', 500),
+(4, 'Монитор', 7000),
+(5, 'Гитара', 4000);
 
-
+INSERT INTO clients  --добавим данных в таблицу clients
+VALUES 
+(1, 'Иванов Иван Иванович', 'USA'),
+(2, 'Петров Петр Петрович', 'Canada'),
+(3, 'Иоганн Себастьян Бах', 'Japan'),
+(4, 'Ронни Джеймс Дио', 'Russia'),
+(5, 'Ritchie Blackmore', 'Russia');
+```
 psql -U postgres -d postgres
 
 
