@@ -167,7 +167,7 @@ WHERE
 order by 
     1,2,3;
 ```
-```
+```BASH
 grantee      | table_name | privilege_type
 ------------------+------------+----------------
  test-admin-user  | clients    | DELETE
