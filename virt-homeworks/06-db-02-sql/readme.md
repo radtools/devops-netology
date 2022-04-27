@@ -360,7 +360,7 @@ test_db=# explain select * from clients where заказ is not null;
 ``pg_dump -U postgres test_db -f /var/lib/postgresql/dump_test.sql``  
 Остановим контейнер  
 ``docker stop 3e89a4b99833``   
-Запустим новый контейнер с примонтированными docker volumes
-
+Запустим новый контейнер с примонтированными docker volumes и выполним восстановление из дампа
+psql -U pguser -W test_db < /var/lib/backup/test_db.dump
 
 
