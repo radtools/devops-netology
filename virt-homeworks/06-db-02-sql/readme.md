@@ -248,7 +248,7 @@ VALUES
 (5, 'Ritchie Blackmore', 'Russia'); --строка 5
 ```
 Результат:
-```BASH
+```SQL
 test_db=# select * from orders;
 
  orders_id | наименование | цена
@@ -272,7 +272,7 @@ test_db=# select * from clients;
 
 ```
 Вычислите количество записей для каждой таблицы, приведите в ответе: запросы, результаты их выполнения.
-```BASH
+```SQL
 test_db=# select count(*) from orders;
  count
 -------
@@ -311,9 +311,10 @@ update  clients set заказ = 3 where clients_id = 1;
 update  clients set заказ = 4 where clients_id = 2;  
 update  clients set заказ = 5 where clients_id = 3;  
 ```
-Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.
+Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.  
+``select * from clients where заказ is not null`` - проверим и выведем непустые значения по "заказам" клиентов  
 
-```
+```SQL
 test_db=# select * from clients where заказ is not null;
  clients_id |         ФИО          | страна проживания | заказ
 ------------+----------------------+-------------------+-------
@@ -322,5 +323,22 @@ test_db=# select * from clients where заказ is not null;
           3 | Иоганн Себастьян Бах | Japan             |     5
 (3 rows)
 ```
+## Задача 5
+
+Получите полную информацию по выполнению запроса выдачи всех пользователей из задачи 4 
+(используя директиву EXPLAIN).
+
+Приведите получившийся результат и объясните что значат полученные значения.
+
+```SQL
+test_db=# explain select * from clients where заказ is not null;
+                         QUERY PLAN
+------------------------------------------------------------
+ Seq Scan on clients  (cost=0.00..12.40 rows=239 width=300)
+   Filter: ("заказ" IS NOT NULL)
+(2 rows)
+```
+
+
 
 
