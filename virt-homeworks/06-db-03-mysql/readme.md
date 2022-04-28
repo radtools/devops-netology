@@ -40,7 +40,31 @@ sudo docker run --rm --name mysql-docker -e MYSQL_ROOT_PASSWORD=mysql -ti -p 330
 sudo docker exec -it mysql-docker bash #запустим bash в контейнере docker
 ```
 Статус БД
+```
+mysql> \s
+--------------
+mysql  Ver 8.0.29 for Linux on x86_64 (MySQL Community Server - GPL)
 
+Connection id:          11
+Current database:
+Current user:           root@localhost
+SSL:                    Not in use
+Current pager:          stdout
+Using outfile:          ''
+Using delimiter:        ;
+Server version:         8.0.29 MySQL Community Server - GPL
+Protocol version:       10
+Connection:             Localhost via UNIX socket
+Server characterset:    utf8mb4
+Db     characterset:    utf8mb4
+Client characterset:    latin1
+Conn.  characterset:    latin1
+UNIX socket:            /var/run/mysqld/mysqld.sock
+Binary data as:         Hexadecimal
+Uptime:                 5 min 27 sec
 
+Threads: 2  Questions: 5  Slow queries: 0  Opens: 453  Flush tables: 5  Open tables: 0  Queries per second avg: 0.015
+--------------
+```
 
 
