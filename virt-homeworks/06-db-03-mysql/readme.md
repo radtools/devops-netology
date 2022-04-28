@@ -34,7 +34,7 @@
 vol1="data-vol"                    #укажем в переменной наименование тома vol1
 
 sudo apt install docker -y         #установим docker (если он не установлен)
-sudo docker pull postgres:12       #забираем образ Postgesql12 с docker HUB
+sudo docker pull mysql             #забираем образ mysql с docker HUB
 sudo docker volume create "$vol1"  #создадим vol для MySQL
 sudo docker run --rm --name mysql-docker -e MYSQL_ROOT_PASSWORD=mysql -ti -p 3306:3306 -v "$vol1":/etc/mysql/ mysql:8.0
 sudo docker exec -it mysql-docker bash #запустим bash в контейнере docker
