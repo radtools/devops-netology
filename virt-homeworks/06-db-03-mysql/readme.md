@@ -39,13 +39,22 @@ sudo docker volume create "$vol1"  #создадим vol для MySQL
 sudo docker run --rm --name mysql-docker -e MYSQL_ROOT_PASSWORD=mysql -ti -p 3306:3306 -v "$vol1":/etc/mysql/ mysql:8.0
 sudo docker exec -it mysql-docker bash #запустим bash в контейнере docker
 ```
-Статус БД
+Восстановим БД из бекапа
+```BASH
+root@6a6f611abd1f:/# cd home #перейдем в каталог HOME
+root@6a6f611abd1f:/home# wget https://raw.githubusercontent.com/netology-code/virt-homeworks/master/06-db-03-mysql/test_data/test_dump.sql #скачаем дамп БД
+root@6a6f611abd1f:/home# mysql -uroot -p #запустим mysql cli
+mysql> CREATE DATABASE test DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; #создадим пустую БД
+root@6a6f611abd1f:/home# mysql -v -u root -p   test < /home/test_dump.sql  #восстановим БД из бекапа в пустую БД
 ```
+
+Статус БД
+```SQL
 mysql> \s
 --------------
 mysql  Ver 8.0.29 for Linux on x86_64 (MySQL Community Server - GPL)
 
-Connection id:          11
+Connection id:          18
 Current database:
 Current user:           root@localhost
 SSL:                    Not in use
@@ -61,10 +70,11 @@ Client characterset:    latin1
 Conn.  characterset:    latin1
 UNIX socket:            /var/run/mysqld/mysqld.sock
 Binary data as:         Hexadecimal
-Uptime:                 5 min 27 sec
+Uptime:                 1 hour 7 min 51 sec
 
-Threads: 2  Questions: 5  Slow queries: 0  Opens: 453  Flush tables: 5  Open tables: 0  Queries per second avg: 0.015
+Threads: 2  Questions: 49  Slow queries: 0  Opens: 476  Flush tables: 5  Open tables: 22  Queries per second avg: 0.012
 --------------
+
 ```
 
 
