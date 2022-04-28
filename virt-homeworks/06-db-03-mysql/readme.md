@@ -39,6 +39,8 @@ sudo docker volume create "$vol1"  #создадим vol для MySQL
 sudo docker run --rm --name mysql-docker -e MYSQL_ROOT_PASSWORD=mysql -ti -p 3306:3306 -v "$vol1":/etc/mysql/ mysql:8.0
 sudo docker exec -it mysql-docker bash #запустим bash в контейнере docker
 ```
+Статус БД
+
 
 
 
