@@ -139,7 +139,10 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
 - на `MyISAM`
 - на `InnoDB`
 </details>
+
+
 ```SQL
+
 mysql>SELECT TABLE_NAME,ENGINE,ROW_FORMAT,TABLE_ROWS,DATA_LENGTH,INDEX_LENGTH FROM information_schema.TABLES WHERE table_name = 'orders' and  TABLE_SCHEMA = 'test' ORDER BY ENGINE asc;
 +------------+--------+------------+------------+-------------+--------------+
 | TABLE_NAME | ENGINE | ROW_FORMAT | TABLE_ROWS | DATA_LENGTH | INDEX_LENGTH |
@@ -159,6 +162,5 @@ mysql> SELECT TABLE_NAME,ENGINE,ROW_FORMAT,TABLE_ROWS,DATA_LENGTH,INDEX_LENGTH F
 | orders     | MyISAM | Dynamic    |          5 |       16384 |            0 |
 +------------+--------+------------+------------+-------------+--------------+
 1 row in set (0.01 sec)
-
 
 ```
