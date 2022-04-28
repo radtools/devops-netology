@@ -76,5 +76,16 @@ Threads: 2  Questions: 49  Slow queries: 0  Opens: 476  Flush tables: 5  Open ta
 --------------
 
 ```
+Приведите в ответе количество записей с price > 300.
 
-
+```SQL
+mysql>  use test;
+Database changed
+mysql> select count(*) from orders where price >300;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+```
