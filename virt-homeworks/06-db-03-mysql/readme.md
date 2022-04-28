@@ -109,11 +109,22 @@ mysql> select count(*) from orders where price >300;
 </details>
 
 ```SQL
-mysql> mysql> CREATE USER IF NOT EXISTS 'test'@'localhost'
+mysql> CREATE USER IF NOT EXISTS 'test'@'localhost'
     -> IDENTIFIED WITH mysql_native_password BY 'test-pass'
     -> WITH MAX_CONNECTIONS_PER_HOUR 100
     -> PASSWORD EXPIRE INTERVAL 180 DAY
     -> FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 2
     -> ATTRIBUTE '{"first_name":"James", "last_name":"Pretty"}';
+
+mysql> GRANT Select ON test.orders TO 'test'@'localhost';
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
++------+-----------+---------------------------------------+
+| USER | HOST      | ATTRIBUTE                             |
++------+-----------+---------------------------------------+
+| test | localhost | {"fname": "James", "lname": "Pretty"} |
++------+-----------+---------------------------------------+
+1 row in set (0.00 sec)   
 ```
 
