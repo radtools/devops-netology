@@ -110,7 +110,7 @@ mysql> select count(*) from orders where price >300;
 
 ```SQL
 mysql> mysql> CREATE USER IF NOT EXISTS 'test'@'localhost'
-    ->  IDENTIFIED WITH mysql_native_password BY 'test-pass'
+    -> IDENTIFIED WITH mysql_native_password BY 'test-pass'
     -> WITH MAX_CONNECTIONS_PER_HOUR 100
     -> PASSWORD EXPIRE INTERVAL 180 DAY
     -> FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 2
