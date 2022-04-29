@@ -192,3 +192,30 @@ mysql> show profiles;
 
 Приведите в ответе измененный файл `my.cnf`.
 </details>
+
+
+```BASH
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+
+# Custom config should go here
+!includedir /etc/mysql/conf.d/
+
+#study_cfg
+#Set IO Speed
+#Значение “0” даст наибольшую производительность. В этом случае буфер будет сбрасываться в лог файл независимо от транзакций. 
+#В этом случае риск потери данных возрастает.
+innodb_flush_log_at_trx_commit = 0 
+#Set compression
+#необходимым условий для сжатия таблиц - наличие формата файлов Barracuda.
+innodb_file_format=Barracuda
+#Размер буффера с незакомиченными транзакциями 1 Мб
+innodb_log_buffer_size	= 1M
+#Буффер кеширования 30% от ОЗУ, ОЗУ на хосте=4096М
+key_buffer_size = 1228M
+#Размер файла логов операций 100 Мб
+max_binlog_size	= 100M
+```
