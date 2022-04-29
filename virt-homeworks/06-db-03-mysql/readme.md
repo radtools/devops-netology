@@ -163,4 +163,15 @@ mysql> SELECT TABLE_NAME,ENGINE,ROW_FORMAT,TABLE_ROWS,DATA_LENGTH,INDEX_LENGTH F
 +------------+--------+------------+------------+-------------+--------------+
 1 row in set (0.01 sec)
 
+mysql> show profiles;
++----------+------------+--------------------------------------+
+| Query_ID | Duration   | Query                                |
++----------+------------+--------------------------------------+
+|        1 | 0.00061675 | set profiling = 1                    |
+|        2 | 0.05663300 | alter table orders engine = 'MyISAM' |
+|        3 | 0.02504125 | alter table orders engine = 'InnoDB' |
++----------+------------+--------------------------------------+
+7 rows in set, 1 warning (0.00 sec)
+
 ```
+
