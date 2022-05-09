@@ -218,6 +218,9 @@ test_database=# SELECT attname, avg_width FROM pg_stats WHERE tablename = 'order
 провести разбиение таблицы на 2 (шардировать на orders_1 - price>499 и orders_2 - price<=499).
 
 Предложите SQL-транзакцию для проведения данной операции.
+
+<details>
+<summary>SCRPT</summary>                                                                                              
 ```SQL
 -- переименование "старой"  orders
   alter table public.orders rename to orders_old;
@@ -262,11 +265,16 @@ test_database=# SELECT attname, avg_width FROM pg_stats WHERE tablename = 'order
   -- удаление старой orders
   drop table public.orders_old;
 ```
-
+</details>
+  
 Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
+
+При изначальном проектировании таблиц можно было сделать ее секционированной  
 
 ## Задача 4
 
-Используя утилиту `pg_dump` создайте бекап БД `test_database`.
+Используя утилиту `pg_dump` создайте бекап БД `test_database`.  
+`root@b443c9eb4b83:/# pg_dump -U postgres -d test_database >test_database_dump.sql`
 
-Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?
+Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?  
+Для уникальности можно добавить индекс или первичный ключ.
