@@ -201,13 +201,12 @@ ANALYZE
 с наибольшим средним значением размера элементов в байтах.
                                                    
  ```
-test_database=# SELECT avg_width FROM pg_stats WHERE tablename='orders';
-avg_width 
------------
-         4
-        16
-         4
-(3 rows)
+test_database=# SELECT attname, avg_width FROM pg_stats WHERE tablename = 'orders' order by avg_width desc limit 1;
+ attname | avg_width 
+---------+-----------
+ title   |        16
+(1 row)
+
 ```
 
 **Приведите в ответе** команду, которую вы использовали для вычисления и полученный результат.
@@ -219,6 +218,50 @@ avg_width
 провести разбиение таблицы на 2 (шардировать на orders_1 - price>499 и orders_2 - price<=499).
 
 Предложите SQL-транзакцию для проведения данной операции.
+```SQL
+-- переименование "старой"  orders
+  alter table public.orders rename to orders_old;
+
+  -- создание новой orders с партиционированием
+  create table public.orders (
+      like public.orders_old
+      including defaults
+      including constraints
+      including indexes
+  );
+
+ --создание новой orders со значениями price > 499 
+ create table public.orders_above499 (
+      check (price>499)
+  ) inherits (public.orders);
+
+ --создание новой orders со значениями price < 499 
+ create table public.orders_under499 (
+      check (price<=499)
+  ) inherits (public.orders);
+
+ --зададим права на новые таблицы 
+  ALTER TABLE public.orders_above499 OWNER TO postgres;
+  ALTER TABLE public.orders_under499 OWNER TO postgres;
+
+ create rule orders_insert_over_499 as on insert to public.orders
+  where (price>499)
+  do instead insert into public.orders_above499 values(NEW.*);
+
+  create rule orders_insert_499_or_less as on insert to public.orders
+  where (price<=499)
+  do instead insert into public.orders_under499 values(NEW.*);
+
+  -- копирование данных из старой в новую
+  insert into public.orders (id,title,price) select id,title,price from public.orders_old;
+
+  -- перепривязывание SEQUENCE
+  alter table public.orders_old alter id drop default;
+  ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+  -- удаление старой orders
+  drop table public.orders_old;
+```
 
 Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
 
