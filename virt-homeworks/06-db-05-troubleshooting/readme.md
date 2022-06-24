@@ -107,10 +107,10 @@ InterfaceError: (InterfaceError) 2013: Lost connection to MySQL server during qu
 PostgreSQL желает утилизировать всю память хоста. Но Out-Of-Memory Killer не согласен с этим и прибивает процесс PostgreSQL
 
 **Как бы вы решили данную проблему?**  
-Вероятно настройкой перевыделения памяти:  
-`vm.overcommit_memory = 2` - ядро не будет резервировать больше памяти, чем указано в параметре overcommit_ratio  
-`vm.overcommit_ratio` = % выделяемой на резервирование памяти
-`vm.swappiness` = использование swap как памяти
+Вероятно настройкой перевыделения памяти:    
+`vm.overcommit_memory = 2` - ядро не будет резервировать больше памяти, чем указано в параметре overcommit_ratio    
+`vm.overcommit_ratio` = % выделяемой на резервирование памяти  
+`vm.swappiness` = использование swap как памяти  
 
 ---
 
