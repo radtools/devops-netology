@@ -34,12 +34,23 @@ db.currentOp(  # Returns a document that contains information on in-progress ope
 }
 ```
 
-- предложите вариант решения проблемы с долгими (зависающими) запросами в MongoDB  
-
 
 ```yaml
 db.killOp(XXXX) #Terminates an operation as specified by the operation ID
 ```
+
+- предложите вариант решения проблемы с долгими (зависающими) запросами в MongoDB  
+
+Использовать `maxTimeMS()`    
+The maxTimeMS() method sets a time limit for an operation. When the operation reaches the specified time limit, MongoDB interrupts the operation at the next interrupt point.  
+Пример ограничения операции 30-ю мс: 
+
+```yaml
+db.location.find( { "town": { "$regex": "(Pine Lumber)",
+                              "$options": 'i' } } ).maxTimeMS(30)
+```                              
+Так же нужно построить/перестроить соответствующий индекс.
+
 
 ## Задача 2
 
