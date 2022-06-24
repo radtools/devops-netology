@@ -2,14 +2,42 @@
 
 ## Задача 1
 
-Перед выполнением задания ознакомьтесь с документацией по [администрированию MongoDB](https://docs.mongodb.com/manual/administration/).
+Перед выполнением задания ознакомьтесь с документацией по [администрированию MongoDB](https://metanit.com/nosql/mongodb/1.1.php).
 
 Пользователь (разработчик) написал в канал поддержки, что у него уже 3 минуты происходит CRUD операция в MongoDB и её 
 нужно прервать. 
 
 Вы как инженер поддержки решили произвести данную операцию:
 - напишите список операций, которые вы будете производить для остановки запроса пользователя
-- предложите вариант решения проблемы с долгими (зависающими) запросами в MongoDB
+
+```yml
+db.currentOp(  # Returns a document that contains information on in-progress operations for the database instance.
+   { 
+     "active" : true, # Active operations only
+     "secs_running" : { "$gt" : 180 } # returns information on all active operations for database that have been running longer than 120 seconds
+   } 
+)
+```
+Вывод запроса примерно такой
+```yaml
+{
+    "inprog" : [ #status of operation
+        {
+            //...
+            "opid" : XXXX, #ID of operation
+            "secs_running" : NumberLong(YYYY) # The duration of the operation in seconds
+            //...
+        }
+    ]
+}
+```
+
+- предложите вариант решения проблемы с долгими (зависающими) запросами в MongoDB  
+
+
+```yaml
+db.killOp(XXXX) #Terminates an operation as specified by the operation ID
+```
 
 ## Задача 2
 
