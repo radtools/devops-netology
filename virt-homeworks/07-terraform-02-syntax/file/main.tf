@@ -1,6 +1,6 @@
 resource "yandex_compute_instance" "vm-Ubuntu-srv" {
   name                      = "vm-Ubuntu-srv"
-  description               = "First test instance"
+  description               = "Test instance"
   allow_stopping_for_update = true
 
   resources {
@@ -14,9 +14,9 @@ resource "yandex_compute_instance" "vm-Ubuntu-srv" {
 
     initialize_params {
       # Ubuntu 20.04
-      image_id    = "fd81u2vhv3mc49l1ccbb" #ID образа из маркетплейса ЯО
-      name        = "disk-root"            #Имя диска  
-      description = "Disk for the root"    #Описание диска
+      image_id    = "fd81u2vhv3mc49l1ccbb"      #ID образа из маркетплейса ЯО
+      name        = "disk-root"                 #Имя диска  
+      description = "Disk for the root"         #Описание диска
       size        = "${var.instance_root_disk}" #размер указан в переменных
     }
   }
