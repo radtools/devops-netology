@@ -1,4 +1,4 @@
-# Proxmox Provider
+# Terraform YC Provider
 # ---
 # Стартовая конфигурация провайдера ЯО
 
