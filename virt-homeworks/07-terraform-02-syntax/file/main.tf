@@ -31,10 +31,6 @@ resource "yandex_compute_instance" "vm-Ubuntu-srv" {
     nat       = true
   }
 
-  #metadata {
-  #  ssh-keys = "extor:${file("~/.ssh/id_rsa.pub")}"
-  #}
-
   labels {
     environment = "test"
   }
