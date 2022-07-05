@@ -7,7 +7,7 @@
 AWS предоставляет достаточно много бесплатных ресурсов в первый год после регистрации, подробно описано [здесь](https://aws.amazon.com/free/).
 1. Создайте аккаут aws.
 1. Установите c aws-cli https://aws.amazon.com/cli/.
-1. Выполните первичную настройку aws-sli https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html.
+1. Выполните первичную настройку aws-cli https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html.
 1. Создайте IAM политику для терраформа c правами
     * AmazonEC2FullAccess
     * AmazonS3FullAccess
