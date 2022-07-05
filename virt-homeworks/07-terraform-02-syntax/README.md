@@ -74,7 +74,7 @@ Packer (я полагаю)
 
 2. Ссылку на репозиторий с исходной конфигурацией терраформа.  
 
-[файло тут](https://github.com/radtools/devops-netology/tree/main/virt-homeworks/07-terraform-02-syntax/file)
+[ссылка на фаилы](https://github.com/radtools/devops-netology/tree/main/virt-homeworks/07-terraform-02-syntax/file)
 
  
 
