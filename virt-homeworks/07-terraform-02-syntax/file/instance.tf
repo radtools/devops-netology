@@ -1,5 +1,5 @@
 resource "yandex_compute_instance" "vm-Ubuntu-srv" {
-  name                      = "vm-centos-7"
+  name                      = "vm-Ubuntu-srv"
   description               = "First test instance"
   allow_stopping_for_update = true
 
