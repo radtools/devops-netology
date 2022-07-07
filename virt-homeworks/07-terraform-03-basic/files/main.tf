@@ -17,3 +17,10 @@ terraform {
     skip_credentials_validation = true
   }
 }
+provider "yandex" {
+  #переменные для доступа к облаку
+  token     = "${var.yandex-token}"  #API токен
+  cloud_id  = "${var.yandex-cloud-id}" #ID облака
+  folder_id = "${var.yandex-folder-id}" #ID каталога
+  zone      = "${var.zone}" #зона для хостинга ВМ
+}
