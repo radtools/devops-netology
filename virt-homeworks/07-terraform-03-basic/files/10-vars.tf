@@ -25,11 +25,11 @@ variable "instance_additional_disk" {
 }
 
 variable "vm-name" {
-  default = "ubuntu_test_srv"
+  default = "debian_test_srv"
 }
 
 variable "discpiption" {
-  default = "my_ubuntu_test_srv"
+  default = "my_debian_test_srv"
 }
 
 variable "image-id" {
