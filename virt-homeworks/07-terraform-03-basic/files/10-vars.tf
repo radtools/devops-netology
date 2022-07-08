@@ -3,19 +3,19 @@
 variable "zone" {
   default = "ru-central1-b"
 }
-
+#oAuth_vars
 variable "yandex-token" {
-  default = "XXXXXXX"
+  default = "zzzzzzz"
 }
 
 variable "yandex-cloud-id" {
-  default = "YYYYYYYY"
+  default = "1234567"
 }
 
 variable "yandex-folder-id" {
-  default = "ZZZZZZZZ"
+  default = "xyzxyzxyz"
 }
-
+#Disk_vars
 variable "instance_root_disk" {
   default = "10"
 }
@@ -23,35 +23,28 @@ variable "instance_root_disk" {
 variable "instance_additional_disk" {
   default = "2"
 }
-
+#VM_name_vars
 variable "vm-name" {
-  default = "debian_test_srv"
+  default = "debian-srv"
 }
 
 variable "discpiption" {
-  default = "my_debian_test_srv"
+  default = "my_Debian_test_srv"
 }
-
+#Image_ID_yandexMarket
 variable "image-id" {
-  default = "fd86ul0ci8ttbst35ln3" #Debian from yandex Market
+  default = "fd86ul0ci8ttbst35ln3"
 }
 
-variable "name-instance" {
-  default = "Debian 11"
-}
-
-variable "desc-instance" {
-  default = "deb_yc_template"
-}
-
+#bucket_vars
 variable "buc_name" {
   default = "ya-buck"
 }
 
 variable "acces_key_buc" {
-  default = "XYZXYZ"
+  default = "supersecretkey"
 }
 
 variable "sec-key_buc" {
-  default = "AAAAAAAAAAAAAAAAAAAAAAA"
+  default = "secretsuperkey"
 }
