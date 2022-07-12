@@ -29,16 +29,21 @@ dynamodb.
 В виде результата работы пришлите:
 * Вывод команды `terraform workspace list`.
 <details>
-```
+   
+```  
 PS C:\Terraform\terra_for_each> terraform workspace list 
   default
 * prod
   stage
-```
-</details>  
-* Вывод команды `terraform plan` для воркспейса `prod`. 
-<details>
-```
+``` 
+   
+</details> 
+
+* Вывод команды `terraform plan` для воркспейса `prod`.
+ 
+<details> 
+   
+```  
 PS C:\Terraform\terra_for_each> terraform plan -var-file prod.tfvars 
 yandex_vpc_network.t-net: Refreshing state... [id=enpel15n4ehuq3bhq2qs]
 yandex_vpc_subnet.subnet: Refreshing state... [id=e2llp7cn03scn4fbm053]
@@ -128,5 +133,6 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-```
-</details>
+``` 
+   
+</details>  
