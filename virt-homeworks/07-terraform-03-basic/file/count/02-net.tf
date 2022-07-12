@@ -8,7 +8,6 @@ resource "yandex_vpc_network" "t-net" {
 }
 
 resource "yandex_vpc_subnet" "subnet" {
-  count = var.instance_count
   name           = "t-subnet - ${terraform.workspace}"
   description    = "Test Subnet - ${terraform.workspace}"
   zone           = var.zone
