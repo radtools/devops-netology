@@ -4,8 +4,8 @@ backend "s3" {
     bucket     = "ya-buck"
     region     = "ru-central1"
     key        = "tfstate/terraform.tfstate"
-    access_key = "YCAJEa7l5UNIMcH0r4Zx_cJ46"
-    secret_key = "YCNCNoufrfBeIJ5f912RPnY0ywVKyCt-g-yOLNHH"
+    access_key = "YYYYYYYYYYY"
+    secret_key = "ZZZZZZZZZZZ"
 
     
     skip_region_validation      = true
