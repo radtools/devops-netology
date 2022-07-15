@@ -39,7 +39,27 @@
         fmt.Println(output)    
     }
     ```
-  
+<details>
+	
+```
+	package main
+
+import "fmt"
+
+func Convert(meters float64) (result float64) {
+	result = meters * 0.3048
+	return result
+}
+
+func main() {
+	fmt.Print("Введите растояние в метрах: ")
+	var input float64
+	fmt.Scanf("%f", &input)
+	fmt.Printf("Введенное растояние в метрах равно %v в футах", Convert(input))
+}
+```
+</details>
+
  
 2. Напишите программу, которая найдет наименьший элемент в любом заданном списке, например:
     ```
@@ -81,7 +101,8 @@ Program exited.
    
 3. Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. То есть `(3, 6, 9, …)`.
 	
-<details>  
+<details> 
+	
 code  	
 ```
 package main
@@ -98,7 +119,9 @@ func main() {
 	}
 }
 ```
+			    
 result  
+			    
 ```
 3
 6
@@ -129,18 +152,18 @@ result
 81
 84
 87
-90
-			    
+90			    
 93
 96
 99
 
 Program exited.
 			    
-```  
+```
+</details>
+	
 В виде решения ссылку на код или сам код. 
 
 ## Задача 4. Протестировать код (не обязательно).
 
 Создайте тесты для функций из предыдущего задания. 
-```  
