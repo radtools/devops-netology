@@ -22,8 +22,8 @@
     * Какому регулярному выражению должно подчиняться имя? 
 
 [ConflictsWith: []string{"name_prefix"}](https://github.com/hashicorp/terraform-provider-aws/blob/13250008929047c5ce703584e21fa4ba76c79da0/internal/service/sqs/queue.go#L82)    
-80 символов
-[выражение] (https://github.com/hashicorp/terraform-provider-aws/blob/13250008929047c5ce703584e21fa4ba76c79da0/internal/service/sqs/queue.go#L424)
+80 символов   
+[выражение](https://github.com/hashicorp/terraform-provider-aws/blob/13250008929047c5ce703584e21fa4ba76c79da0/internal/service/sqs/queue.go#L424)
 
 ## Задача 2. (Не обязательно) 
 В рамках вебинара и презентации мы разобрали как создать свой собственный провайдер на примере кофемашины. 
