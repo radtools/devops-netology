@@ -152,10 +152,10 @@ Encryption successful
 8. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь в работоспособности.  
 
 ```diff
-+root@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
+root@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
 Using /etc/ansible/ansible.cfg as config file
 
-#PLAY [Print os facts] *******************************************************
+PLAY [Print os facts] *******************************************************
 -ERROR! Attempting to decrypt but no vault secrets found
 ```
 fix
@@ -197,6 +197,22 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 +local
 ```
 10. В `prod.yml` добавьте новую группу хостов с именем  `local`, в ней разместите localhost с необходимым типом подключения.
+```yaml
+--
+  el:
+    hosts:
+      centos7:
+        ansible_connection: docker
+  deb:
+    hosts:
+      ubuntu:
+        ansible_connection: docker
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
+ ```
+
 11. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь что факты `some_fact` для каждого из хостов определены из верных `group_vars`.
 12. Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.
 
