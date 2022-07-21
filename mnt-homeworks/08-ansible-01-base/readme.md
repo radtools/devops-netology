@@ -75,13 +75,13 @@ Attaching to ubuntu, centos7
 root@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
 Using /etc/ansible/ansible.cfg as config file
 
-PLAY [Print os facts] ************************************************************************************************************************************************************************************************************************
+PLAY [Print os facts] **********************************************************
 
-TASK [Gathering Facts] ***********************************************************************************************************************************************************************************************************************
+TASK [Gathering Facts] *********************************************************
 ok: [ubuntu]
 ok: [centos7]
 
-TASK [Print OS] ******************************************************************************************************************************************************************************************************************************
+TASK [Print OS] ****************************************************************
 ok: [centos7] => {
     "msg": "CentOS"
 }
@@ -89,7 +89,7 @@ ok: [ubuntu] => {
     "msg": "Ubuntu"
 }
 
-TASK [Print fact] ****************************************************************************************************************************************************************************************************************************
+TASK [Print fact] **************************************************************
 ok: [centos7] => {
     "msg": "el"
 }
@@ -97,7 +97,7 @@ ok: [ubuntu] => {
     "msg": "deb"
 }
 
-PLAY RECAP ***********************************************************************************************************************************************************************************************************************************
+PLAY RECAP *********************************************************************
 centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
 ```
@@ -109,12 +109,9 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 radtools@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
 Using /etc/ansible/ansible.cfg as config file
 
-PLAY [Print os facts] ************************************************************************************************************************************************************************************************************************
+PLAY [Print os facts] ********************************************************
 
 TASK [Gathering Facts] *******************************************************
-[DEPRECATION WARNING]: Distribution Ubuntu 18.04 on host ubuntu should use /usr/bin/python3, but is using /usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to using the 
-discovered platform python for this host. See https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information. This feature will be removed in version 2.12. Deprecation warnings can be disabled 
-by setting deprecation_warnings=False in ansible.cfg.
 ok: [ubuntu]
 ok: [centos7]
 
