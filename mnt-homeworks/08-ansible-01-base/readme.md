@@ -151,12 +151,12 @@ Encryption successful
 
 8. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь в работоспособности.  
 
-```bash
-root@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
+```diff
++root@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml
 Using /etc/ansible/ansible.cfg as config file
 
-PLAY [Print os facts] *******************************************************
-ERROR! Attempting to decrypt but no vault secrets found
+#PLAY [Print os facts] *******************************************************
+-ERROR! Attempting to decrypt but no vault secrets found
 ```
 fix
 
