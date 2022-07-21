@@ -214,6 +214,94 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
  ```
 
 11. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь что факты `some_fact` для каждого из хостов определены из верных `group_vars`.
+
+```bash
+radtools@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml --ask-vault-pass
+Using /etc/ansible/ansible.cfg as config file
+Vault password: 
+
+PLAY [Print os facts] ************************************************************
+
+TASK [Gathering Facts] *************************************************************
+ok: [localhost]
+ok: [centos7]
+ok: [ubuntu]
+
+TASK [Print OS] ******************************************************************
+ok: [localhost] => {
+    "msg": "Linux Mint"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+ok: [centos7] => {
+    "msg": "CentOS"
+}
+
+TASK [Print fact] *****************************************************************
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+
+PLAY RECAP ************************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+```
+root@test:~/git/playground$ cat group_vars/local/examp.yml 
+---
+  some_fact: local default fact
+```
+after that we got domthing like that:
+
+```bash
+radtools@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml --ask-vault-pass
+Using /etc/ansible/ansible.cfg as config file
+Vault password: 
+
+PLAY [Print os facts] *************************************************************
+
+TASK [Gathering Facts] ************************************************************
+
+ok: [localhost]
+ok: [ubuntu]
+ok: [centos7]
+
+TASK [Print OS] ******************************************************************
+ok: [localhost] => {
+    "msg": "Linux Mint"
+}
+ok: [centos7] => {
+    "msg": "CentOS"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] *****************************************************************
+ok: [localhost] => {
+    "msg": "local default fact"
+}
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+
+PLAY RECAP ************************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+
 12. Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.
 
 ## Необязательная часть
