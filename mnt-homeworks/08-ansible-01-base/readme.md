@@ -2,7 +2,7 @@
 
 ## Подготовка к выполнению
 1. Установите ansible версии 2.10 или выше.
-```
+```bash
 root@test:~$ ansible --version
 ansible 2.9.6
 ```
@@ -13,7 +13,7 @@ ansible 2.9.6
 
 ## Основная часть
 1. Попробуйте запустить playbook на окружении из `test.yml`, зафиксируйте какое значение имеет факт `some_fact` для указанного хоста при выполнении playbook'a.
-```
+```bash
 root@test:~/git/playground$ ansible-playbook -i inventory/test.yml site.yml
 
 PLAY [Print os facts] **********************************************************
@@ -36,7 +36,7 @@ localhost                  : ok=3    changed=0    unreachable=0    failed=0    s
 ```
 
 2. Найдите файл с переменными (group_vars) в котором задаётся найденное в первом пункте значение и поменяйте его на 'all default fact'.   
-```
+```bash
 root@test:~/git/playground$ cat group_vars/all/examp.yml 
 ---
   some_fact: all default fact
@@ -44,7 +44,7 @@ root@test:~/git/playground$ cat group_vars/all/examp.yml
 3. Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.
 
 4. Проведите запуск playbook на окружении из `prod.yml`. Зафиксируйте полученные значения `some_fact` для каждого из `managed host`.
-```
+```yaml
 docker-compose.yml
 
 version: '3'
@@ -62,7 +62,7 @@ services:
     entrypoint: "sleep infinity"
 ```
 &&&  
-```
+```bash
 root@test:~/docker$ sudo docker-compose up
 Pulling centos7 (library/centos:7)...
 7: Pulling from library/centos
