@@ -254,12 +254,14 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
+`без создания отдельного group_vars -> получил для local из all, добавил vars`
+
 ```
 root@test:~/git/playground$ cat group_vars/local/examp.yml 
 ---
   some_fact: local default fact
 ```
-after that we got domthing like that:
+Повторный прогон:
 
 ```bash
 radtools@test:~/git/playground$ sudo ansible-playbook -i inventory/prod.yml -v site.yml --ask-vault-pass
