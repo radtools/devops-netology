@@ -27,6 +27,7 @@
 5. Logstash конфиг должен конфигурироваться в части ссылки на elasticsearch (можно взять, например его IP из facts или определить через vars).
 6. Дополните README.md, протестируйте playbook, выложите новую версию в github. В ответ предоставьте ссылку на репозиторий.
 
-########
-#[repo](https://github.com/radtools/playground/tree/main/08-02)#
-########
+##########   
+#[repository](https://github.com/radtools/playground/tree/main/08-02)#   
+##########
+Внутри плейбука есть коменты и таски описаны отечественными буквами
