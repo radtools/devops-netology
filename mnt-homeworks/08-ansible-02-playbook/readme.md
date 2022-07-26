@@ -26,3 +26,7 @@
 4. Все переменные для нового play определите в отдельный файл `group_vars/logstash/vars.yml`.
 5. Logstash конфиг должен конфигурироваться в части ссылки на elasticsearch (можно взять, например его IP из facts или определить через vars).
 6. Дополните README.md, протестируйте playbook, выложите новую версию в github. В ответ предоставьте ссылку на репозиторий.
+
+########
+#[repo](https://github.com/radtools/playground/tree/main/08-02)#
+########
