@@ -1,4 +1,4 @@
-##NFO
+**INFO**
 
 - Файл variables.tf - содержит переменные yandex cloud ID и yandex folder id, так же указание на использование переменных типа   
 list из terafform.tfvars (в данном случае это переменные Зон и сетей (CIDR)  
