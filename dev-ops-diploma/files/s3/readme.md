@@ -1,4 +1,4 @@
-#NFO
+**INFO**
 
 - Фаил _variables.tf_ содержит переменные для CloudID и FolderID Яндекс облака.  
 - _service_account_key_file = "../key.json"_ - генерируется через YC CLI  
