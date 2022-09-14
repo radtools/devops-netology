@@ -15,7 +15,7 @@
 ### Инициализируем бакет: 
 
 ```
-cd s3_init/ || return
+cd s3/ || return
 terraform init && terraform plan && terraform apply --auto-approve
 ```
 
