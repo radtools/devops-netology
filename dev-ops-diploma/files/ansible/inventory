@@ -1,0 +1,24 @@
+[nginx]
+radtools.ru
+[wordpress]
+wp.radtools.ru
+[mysql]
+db01.radtools.ru mysql_server_id=1  mysql_replication_role=master
+db02.radtools.ru mysql_server_id=2  mysql_replication_role=slave
+[monitoring]
+monitoring.radtools.ru
+[gitlab]
+gitlab.radtools.ru
+[runner]
+runner.radtools.ru
+
+
+[all_nat:children]
+gitlab
+monitoring
+mysql
+wordpress
+runner
+[all_nat:vars]
+#ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@radtools.ru"'
+ansible_ssh_common_args= "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J ubuntu@radtools.ru"

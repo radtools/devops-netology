@@ -1,0 +1,44 @@
+---
+# defaults file for proxy_server
+nginx_revproxy_sites:
+  www.radtools.ru:
+    domains:
+      - www.radtools.ru
+      - radtools.ru
+    upstreams:
+      - { backend_address: 10.10.3.104, backend_port: 80 }   #app_to_www
+    ssl: true
+    letsencrypt: true
+    letsencrypt_email: "devops@radtools.ru"
+  grafana.radtools.ru:
+    domains:
+      - grafana.radtools.ru
+    upstreams:
+      - { backend_address: 10.10.3.106, backend_port: 3000 }  #monitoring_grafana
+    ssl: true
+    letsencrypt: true
+    letsencrypt_email: "devops@radtools.ru"
+  prometheus.radtools.ru:
+    domains:
+      - prometheus.radtools.ru
+    upstreams:
+      - { backend_address: 10.10.3.106, backend_port: 9090 }  #monitoring_prometheus
+    ssl: true
+    letsencrypt: true
+    letsencrypt_email: "devops@radtools.ru"
+  alertmanager.radtools.ru:
+    domains:
+      - alertmanager.radtools.ru
+    upstreams:
+      - { backend_address: 10.10.3.106, backend_port: 9093 }  #monitoring_alertmanager
+    ssl: true
+    letsencrypt: true
+    letsencrypt_email: "devops@radtools.ru"
+  gitlab.radtools.ru:
+    domains:
+      - gitlab.radtools.ru
+    upstreams:
+      - { backend_address: 10.10.3.105, backend_port: 80 }   #gitlab_to_gitlab
+    ssl: true
+    letsencrypt: true
+    letsencrypt_email: "devops@radtools.ru"

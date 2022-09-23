@@ -1,0 +1,79 @@
+---
+- hosts: none# radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - proxy-server
+
+- hosts: none# all
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - node_exporter
+
+- hosts: none# db01.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+   - mysqld
+   - mysqld_exporter
+  #   - { role: mysqld,
+  #             mysql_db: [{ name: wordpress },
+  #                        { name: wordpress }],
+  #             mysql_users: [{ name: wordpress, pass: wordpress, priv: "*.*:ALL" }],
+  #             mysql_db_id: 7 }
+  
+- hosts: none# db02.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+   - mysqld
+   - mysqld_exporter
+  # - { role: mysqld,
+  #             mysql_db: none,
+  #             mysql_users: none,
+  #             mysql_repl_role: slave,
+  #             mysql_repl_master: master_host,
+  #             mysql_db_id: 8,
+  #             mysql_repl_user: [{ name: repl, pass: verystrong }] }
+  
+
+- hosts: none# wordpress
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - wordpress
+  
+
+- hosts: none# gitlab.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - gitlab
+  - runner
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_initial_root_password }}"
+    GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: "{{ gitlab_runners_registration_token }}"
+
+- hosts: none# runner.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - runner
+  
+
+- hosts: none# monitoring
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - prometheus
+  - alertmanager
+  - grafana
