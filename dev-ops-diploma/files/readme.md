@@ -15,11 +15,21 @@
 ### Инициализируем бакет: 
 
 ```
-cd s3/ || return
 terraform init && terraform plan && terraform apply --auto-approve
 ```
 
 ![image](https://user-images.githubusercontent.com/93760545/190083980-c8c57590-c4b7-4a8d-9f44-6501fd79731f.png)
+
+Далее инициализируем терраформ и создаем воркспейс
+```
+terraform init -reconfigure -backend-config=./backend.conf
+
+terraform workspace new stage
+```
+Далее применяем конфигурацию терраформ  
+```
+terraform init && terraform plan && terraform apply --auto-approve
+```
 
 Проверка репликации БД   
 ![изображение](https://user-images.githubusercontent.com/93760545/192254061-7dcef200-a1af-43d4-9fd4-c1aa4d73b316.png)
