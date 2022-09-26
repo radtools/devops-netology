@@ -34,6 +34,39 @@ terraform init && terraform plan && terraform apply --auto-approve
 ![image](https://user-images.githubusercontent.com/93760545/192260480-9c5404f2-4aec-4764-b33e-501142ab9b84.png)
 ![image](https://user-images.githubusercontent.com/93760545/192260591-2060475f-86d2-4c06-93a1-4ee57a0d6c4c.png)
 
+Далее запускаем Ansible
+
+```
+ansible-playbook playbook.yml
+```
+
+Для начала нстроим IPtables (NAT, routing, mascquerade) (таска NAT.yml)
+
+```YAML
+- name: Create Iptables NAT chain
+  iptables:
+   table: nat
+   chain: POSTROUTING
+   out_interface: 'eth0'
+   jump: MASQUERADE
+
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: True
+
+- name: Install IPtables-persistent
+  apt: name=iptables-persistent state=present
+```
+Далее идут такси для NGINX и LetsEncrypt
+```YAML
+- include_tasks: nat.yml
+- include_tasks: proxy-server.yml
+- include_tasks: letsencrypt.yml
+```
+После устанавливаем MYSQL (Replicated - MASTER\SLAVE)  
 
 Проверка репликации БД   
 ![изображение](https://user-images.githubusercontent.com/93760545/192254061-7dcef200-a1af-43d4-9fd4-c1aa4d73b316.png)
