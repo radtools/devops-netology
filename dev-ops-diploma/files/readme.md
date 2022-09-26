@@ -30,6 +30,10 @@ terraform workspace new stage
 ```
 terraform init && terraform plan && terraform apply --auto-approve
 ```
+Результат:  
+![image](https://user-images.githubusercontent.com/93760545/192260480-9c5404f2-4aec-4764-b33e-501142ab9b84.png)
+![image](https://user-images.githubusercontent.com/93760545/192260591-2060475f-86d2-4c06-93a1-4ee57a0d6c4c.png)
+
 
 Проверка репликации БД   
 ![изображение](https://user-images.githubusercontent.com/93760545/192254061-7dcef200-a1af-43d4-9fd4-c1aa4d73b316.png)
