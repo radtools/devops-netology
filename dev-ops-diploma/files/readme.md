@@ -22,5 +22,6 @@ terraform init && terraform plan && terraform apply --auto-approve
 ![image](https://user-images.githubusercontent.com/93760545/190083980-c8c57590-c4b7-4a8d-9f44-6501fd79731f.png)
 
 Проверка репликации БД   
-![изображение](https://user-images.githubusercontent.com/93760545/192252830-69b58c1e-4173-4ec4-ae77-31ce3355aa07.png)
+![изображение](https://user-images.githubusercontent.com/93760545/192254061-7dcef200-a1af-43d4-9fd4-c1aa4d73b316.png)
+
 
