@@ -51,7 +51,8 @@ ansible-playbook playbook.yml
 
 После устанавливаем MYSQL (Replicated - MASTER\SLAVE)  
 
-Проверка репликации БД   
-![изображение](https://user-images.githubusercontent.com/93760545/192254061-7dcef200-a1af-43d4-9fd4-c1aa4d73b316.png)
+Проверка репликации БД  
+![image](https://user-images.githubusercontent.com/93760545/192269776-a4a1c522-2417-4c9e-8ce5-cfc6cef288ed.png)
+
 
 
