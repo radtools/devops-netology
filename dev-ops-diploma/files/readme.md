@@ -69,6 +69,12 @@ ansible-playbook playbook.yml
 
 Далее идет установка Gitlab-CE и Gitlab-runner
 
+![image](https://user-images.githubusercontent.com/93760545/192447531-524a4279-1e42-4a09-b7ad-c83ae66a5fbd.png)
+
+
+![image](https://user-images.githubusercontent.com/93760545/192447467-97a0fa86-db15-4272-b422-8de0fb5dc95b.png)
+
+
 И в заключение устанавливается стек мониторинга (Prometheus\Grafana\Alertmanager)  
 
 Screenshots:  
