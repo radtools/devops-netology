@@ -126,6 +126,8 @@ deploy-job:
 
 ![image](https://user-images.githubusercontent.com/93760545/192958908-6c459fbd-1fe8-48a7-9d1b-d748c52692f4.png)  
 
+Проверяем изменения на хосте:
+
 ![изображение](https://user-images.githubusercontent.com/93760545/192959091-d7e37808-db81-49f8-acef-483919cd220a.png)
 
 
