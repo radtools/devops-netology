@@ -28,10 +28,9 @@ resource "yandex_compute_instance" "db02" {
     }
 
     metadata = {
-      ssh-keys = "ubuntu:${file("/.ssh/id_rsa.pub")}"
+      ssh-keys = "ubuntu:${file(".ssh/id_rsa.pub")}"
     }
     }
-
     resource "yandex_dns_recordset" "db02" {
       zone_id = yandex_dns_zone.zone1.id
       name    = "db02.radtools.ru."

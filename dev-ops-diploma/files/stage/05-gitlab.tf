@@ -30,13 +30,20 @@ resource "yandex_compute_instance" "git" {
     }
 
     metadata = {
-      ssh-keys = "ubuntu:${file("/.ssh/id_rsa.pub")}"
+      ssh-keys = "ubuntu:${file(".ssh/id_rsa.pub")}"
     }
     }
 
-    resource "yandex_dns_recordset" "git" {
+    resource "yandex_dns_recordset" "rs4" {   
+      zone_id = yandex_dns_zone.zone1.id   
+      name    = "gitlab.radtools.ru."      
+      type    = "A"                        
+      ttl     = 200                        
+      data    = [" ${yandex_compute_instance.proxy.network_interface.0.nat_ip_address} "]
+    }
+    resource "yandex_dns_recordset" "runner" {
       zone_id = yandex_dns_zone.zone1.id
-      name    = "git.radtools.ru."
+      name    = "runner.radtools.ru."
       type    = "A"
       ttl     = 200
       data    = ["${yandex_compute_instance.git.network_interface.0.ip_address}"]

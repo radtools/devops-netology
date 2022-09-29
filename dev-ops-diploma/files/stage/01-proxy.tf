@@ -1,8 +1,8 @@
 resource "yandex_compute_instance" "proxy" {
-  name    = "nginx-proxy"
-  platform_id = "standard-v2"
-  zone     = var.zones[0]
-  hostname   = "radtools.ru"
+  name                        = "nginx-proxy"
+  platform_id                 = "standard-v2"
+  zone                        = var.zones[0]
+  hostname                    = "radtools.ru"
   allow_stopping_for_update = true
 
   resources {
@@ -27,6 +27,14 @@ resource "yandex_compute_instance" "proxy" {
     }
 
     metadata = {
-      ssh-keys = "ubuntu:${file("/.ssh/id_rsa.pub")}"
+      ssh-keys = "ubuntu:${file(".ssh/id_rsa.pub")}"
     }
+    }
+    
+    resource "yandex_dns_recordset" "rs1" {
+      zone_id = yandex_dns_zone.zone1.id
+      name    = "radtools.ru."
+      type    = "A"
+      ttl     = 200
+      data    = [" ${yandex_compute_instance.proxy.network_interface.0.nat_ip_address} "]
     }
