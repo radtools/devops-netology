@@ -1,3 +1,0 @@
-- include_tasks: nat.yml
-- include_tasks: proxy-server.yml
-#- include_tasks: letsencrypt.yml
