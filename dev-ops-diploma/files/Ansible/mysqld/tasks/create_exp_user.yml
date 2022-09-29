@@ -1,0 +1,7 @@
+---
+- name: Create mysql_exporter user
+  mysql_user:
+   name: exporter
+   password: exporter
+   state: present
+   priv: '*.*:PROCESS,REPLICATION CLIENT/*.*:SELECT '
