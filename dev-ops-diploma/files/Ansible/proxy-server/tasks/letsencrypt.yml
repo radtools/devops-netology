@@ -59,7 +59,7 @@
     --email {{ item.value.letsencrypt_email }}
     --non-interactive --cert-name {{ item.key }}
     --agree-tos creates=/etc/letsencrypt/live/{{ item.key }}/fullchain.pem
-    --test-cert
+    #--test-cert
   with_dict: "{{ nginx_revproxy_sites }}"
   when: item.value.letsencrypt | default(False)
 
