@@ -91,8 +91,29 @@ Screenshots:
 ![image](https://user-images.githubusercontent.com/93760545/192956428-0fca33fe-8002-42dc-939e-35bf06021510.png)  
 
 добавляем файл .gitlab-ci.yml
+
+```YAML
+---
+before_script:
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+stages:
+  - deploy
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Deploy"
+    - ssh -o StrictHostKeyChecking=no ubuntu@wp.radtools.ru sudo chown ubuntu /var/www/radtools.ru/wordpress/ -R
+    - rsync -rvz -e "ssh -o StrictHostKeyChecking=no" ./* ubuntu@wp.radtools.ru:/var/www/radtools.ru/wordpress/
+    - ssh -o StrictHostKeyChecking=no ubuntu@wp.radtools.ru.ru rm -rf /var/www/radtools.ru/wordpress/.git
+    - ssh -o StrictHostKeyChecking=no ubuntu@wp.radtools.ru sudo chown www-data /var/www/radtools.ru/wordpress/ -R
 ```
-```
+
 
 
 
