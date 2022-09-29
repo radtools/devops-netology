@@ -10,11 +10,3 @@ resource "yandex_dns_zone" "zone1" {
   public  = true
 }
 
-
-resource "yandex_dns_recordset" "proxy" {
-  zone_id = yandex_dns_zone.zone1.id
-  name    = "radtools.ru."
-  type    = "A"
-  ttl     = 200
-  data    = [" ${yandex_compute_instance.proxy.network_interface.0.nat_ip_address} "]
-}
