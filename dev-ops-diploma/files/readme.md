@@ -31,8 +31,10 @@ terraform workspace new stage
 terraform init && terraform plan && terraform apply --auto-approve
 ```
 Результат:  
-![image](https://user-images.githubusercontent.com/93760545/192260480-9c5404f2-4aec-4764-b33e-501142ab9b84.png)
-![image](https://user-images.githubusercontent.com/93760545/192260591-2060475f-86d2-4c06-93a1-4ee57a0d6c4c.png)
+![image](https://user-images.githubusercontent.com/93760545/192955702-0c15f9d3-bcc7-42fc-acf2-11edc2c5a976.png)
+![image](https://user-images.githubusercontent.com/93760545/192955759-4df370e8-830f-4ca2-b0b8-165bde603105.png)
+![image](https://user-images.githubusercontent.com/93760545/192955817-1e168a66-f68a-4d91-bac2-cc8dff31cb34.png)
+
 
 Далее запускаем Ansible
 
@@ -77,12 +79,20 @@ ansible-playbook playbook.yml
 
 И в заключение устанавливается стек мониторинга (Prometheus\Grafana\Alertmanager)  
 
-Screenshots:  
-![image](https://user-images.githubusercontent.com/93760545/192271455-ee84d291-0f39-4bcf-b957-3fe792626075.png)  
+Screenshots:    
+![image](https://user-images.githubusercontent.com/93760545/192271455-ee84d291-0f39-4bcf-b957-3fe792626075.png)    
 
-![image](https://user-images.githubusercontent.com/93760545/192275613-37e5e5b5-624c-4650-9bbd-9e15e5240275.png)  
+![image](https://user-images.githubusercontent.com/93760545/192275613-37e5e5b5-624c-4650-9bbd-9e15e5240275.png)    
 
-![image](https://user-images.githubusercontent.com/93760545/192275729-5c3903e5-00af-4b03-a558-e12250db7e8d.png)
+![image](https://user-images.githubusercontent.com/93760545/192275729-5c3903e5-00af-4b03-a558-e12250db7e8d.png)  
+
+Клонируем репозиторий в gitlab (New project - import project - repo by URL - https://github.com/wordpress/wordpress.git)  
+
+![image](https://user-images.githubusercontent.com/93760545/192956428-0fca33fe-8002-42dc-939e-35bf06021510.png)  
+
+добавляем файл .gitlab-ci.yml
+```
+```
 
 
 
