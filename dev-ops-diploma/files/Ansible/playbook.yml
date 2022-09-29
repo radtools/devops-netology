@@ -1,0 +1,58 @@
+---
+- hosts: radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - proxy-server
+  - node_exporter
+
+- hosts: db01.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+   - mysqld
+   - mysqld_exporter
+   - node_exporter
+
+- hosts: db02.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+   - mysqld
+   - mysqld_exporter
+   - node_exporter
+  
+
+- hosts: wordpress
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - wordpress
+  - node_exporter
+
+- hosts: gitlab.radtools.ru
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - node_exporter
+  - gitlab
+  - runner
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_initial_root_password }}"
+    GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: "{{ gitlab_runners_registration_token }}"
+
+- hosts: monitoring
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  roles:
+  - prometheus
+  - alertmanager
+  - node_exporter
+  - grafana
+
