@@ -130,7 +130,10 @@ deploy-job:
 
 ![изображение](https://user-images.githubusercontent.com/93760545/192959091-d7e37808-db81-49f8-acef-483919cd220a.png)
 
-
+**Удаление инфраструктуры**
+```
+terraform destroy --auto-approve
+```
 
 
 
