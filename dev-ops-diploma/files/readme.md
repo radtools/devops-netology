@@ -114,7 +114,17 @@ deploy-job:
     - ssh -o StrictHostKeyChecking=no ubuntu@wp.radtools.ru sudo chown www-data /var/www/radtools.ru/wordpress/ -R
 ```
 
+Добавляем переменную SSH_PRIVATE_KEY в settings - ci/cd - variables
 
+![image](https://user-images.githubusercontent.com/93760545/192957321-a5c2f46f-d70e-483c-872e-5d3c2a9d05ae.png)
+
+Пробуем изменить содержимое файла index.php WordPress.
+
+![image](https://user-images.githubusercontent.com/93760545/192958775-b659203a-b06b-4bb5-9e6c-bf9a38ddbaf2.png)  
+
+Коммитим и смотрим deploy_job  
+
+![image](https://user-images.githubusercontent.com/93760545/192958908-6c459fbd-1fe8-48a7-9d1b-d748c52692f4.png)  
 
 
 
