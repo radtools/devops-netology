@@ -134,6 +134,8 @@ deploy-job:
 ```
 terraform destroy --auto-approve
 ```
+Итог:  
+![image](https://user-images.githubusercontent.com/93760545/193516401-5a918f71-64ea-42b4-b73a-c27eeea649f0.png)
 
 
 
